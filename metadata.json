@@ -1,0 +1,8 @@
+{
+  "name": "Descubriendo Emociones En Palabras",
+  "description": "Juego interactivo y didáctico de desarrollo emocional, escucha activa, ruleta y 150 preguntas guiado por Koko.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

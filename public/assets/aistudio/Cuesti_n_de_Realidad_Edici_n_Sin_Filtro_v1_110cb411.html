@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuestión de Realidad V2 - Verdades Incómodas y Mitos Sociales</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter, Quicksand & Fredoka -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Inter:wght@400;500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Quicksand', 'sans-serif'],
+                        kids: ['Fredoka', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Quicksand', 'Inter', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .kids-font {
+            font-family: 'Fredoka', cursive, sans-serif;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(79, 70, 229, 0.3);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(79, 70, 229, 0.6);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-indigo-950 to-purple-950 text-slate-100 flex flex-col min-h-full transition-colors duration-300 dark:from-slate-950 dark:via-slate-900 dark:to-indigo-950">
+
+    <!-- HEADER / NAVIGATION -->
+    <header class="bg-gradient-to-r from-indigo-900 via-purple-900 to-slate-900 text-white shadow-xl sticky top-0 z-50 border-b border-indigo-800/50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-3">
+            <div class="flex items-center space-x-3">
+                <div class="bg-indigo-600/40 p-2.5 rounded-2xl backdrop-blur-md shadow-inner flex items-center justify-center border border-indigo-400/30">
+                    <i class="fa-solid fa-fire text-2xl text-amber-400 animate-pulse"></i>
+                </div>
+                <div>
+                    <h1 class="kids-font text-xl md:text-3xl tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-pink-300 to-cyan-400">Cuestión de Realidad V2</h1>
+                    <p class="text-[11px] md:text-xs text-indigo-200 font-medium">Verdades Incómodas, Mitos y Ruleta de Castigos • 150 Preguntas</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-1.5 md:gap-2 overflow-x-auto py-1">
+                <!-- Theme Toggle Button -->
+                <button onclick="window.app.toggleTheme()" class="p-2.5 bg-white/10 hover:bg-white/20 rounded-xl text-yellow-300 transition backdrop-blur-sm border border-white/10" title="Cambiar Modo Claro/Oscuro">
+                    <i id="themeIcon" class="fa-solid fa-moon text-lg"></i>
+                </button>
+                <!-- Sound Toggle Button -->
+                <button onclick="window.app.toggleSound()" id="soundBtn" class="p-2.5 bg-white/10 hover:bg-white/20 rounded-xl text-emerald-300 transition backdrop-blur-sm border border-white/10" title="Sonido Activado/Desactivado">
+                    <i id="soundIcon" class="fa-solid fa-volume-high text-lg"></i>
+                </button>
+                
+                <button onclick="window.app.switchView('setup')" id="navSetupBtn" class="px-3 py-2 bg-white/20 rounded-xl text-xs md:text-sm font-semibold transition border border-white/20 flex items-center gap-1.5 shadow-inner whitespace-nowrap">
+                    <i class="fa-solid fa-users-gear"></i> <span class="hidden sm:inline">Jugadores</span>
+                </button>
+                <button onclick="window.app.switchView('game')" id="navGameBtn" class="px-3 py-2 bg-white/10 hover:bg-white/20 rounded-xl text-xs md:text-sm font-semibold transition border border-white/20 flex items-center gap-1.5 whitespace-nowrap">
+                    <i class="fa-solid fa-compass"></i> <span class="hidden sm:inline">Ruleta & Tablero</span>
+                </button>
+                <button onclick="window.app.switchView('ranking')" id="navRankingBtn" class="px-3 py-2 bg-white/10 hover:bg-white/20 rounded-xl text-xs md:text-sm font-semibold transition border border-white/20 flex items-center gap-1.5 whitespace-nowrap">
+                    <i class="fa-solid fa-trophy text-yellow-300"></i> <span class="hidden sm:inline">Ranking</span>
+                </button>
+                <button onclick="window.app.switchView('rules')" id="navRulesBtn" class="px-3 py-2 bg-white/10 hover:bg-white/20 rounded-xl text-xs md:text-sm font-semibold transition border border-white/20 flex items-center gap-1.5 whitespace-nowrap">
+                    <i class="fa-solid fa-book-open"></i> <span class="hidden sm:inline">Reglas</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6">
+
+        <!-- VIEW 1: SETUP PARTICIPANTS -->
+        <section id="view-setup" class="space-y-6">
+            <div class="bg-slate-800/90 dark:bg-slate-900/90 rounded-3xl shadow-2xl border border-indigo-500/20 p-5 md:p-8 max-w-2xl mx-auto backdrop-blur-md transition-colors">
+                <div class="text-center mb-6">
+                    <span class="bg-indigo-500/20 text-indigo-300 text-xs font-bold uppercase tracking-wider px-3.5 py-1 rounded-full border border-indigo-500/30">Versión 2 • Configuración</span>
+                    <h2 class="kids-font text-2xl md:text-3xl text-white mt-2">¿Quiénes entran al círculo hoy?</h2>
+                    <p class="text-slate-300 text-xs md:text-sm mt-1">Agrega a los participantes (adolescentes y familiares) para activar la ruleta, los castigos y los comodines.</p>
+                </div>
+
+                <form id="addParticipantForm" onsubmit="window.app.addParticipant(event)" class="flex gap-2.5 mb-6">
+                    <div class="relative flex-grow">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                            <i class="fa-solid fa-user-plus"></i>
+                        </span>
+                        <input type="text" id="participantNameInput" placeholder="Nombre del participante..." required autocomplete="off"
+                            class="w-full pl-10 pr-4 py-3 bg-slate-900/60 border border-slate-700 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium transition text-white text-sm">
+                    </div>
+                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-5 py-3 rounded-2xl shadow-lg shadow-indigo-900/40 transition flex items-center gap-1.5 kids-font text-base md:text-lg whitespace-nowrap">
+                        <i class="fa-solid fa-plus"></i> Agregar
+                    </button>
+                </form>
+
+                <!-- Participants List -->
+                <div class="space-y-3 mb-6">
+                    <div class="flex justify-between items-center text-xs font-bold text-slate-400 uppercase tracking-wider px-1">
+                        <span>Participantes activos (<span id="participantCount">0</span>)</span>
+                        <button onclick="window.app.clearParticipants()" class="text-rose-400 hover:text-rose-300 transition flex items-center gap-1 text-xs">
+                            <i class="fa-solid fa-trash-can"></i> Limpiar todos
+                        </button>
+                    </div>
+                    <div id="participantsList" class="max-h-56 overflow-y-auto space-y-2 pr-1">
+                        <!-- Rendered dynamically -->
+                    </div>
+                </div>
+
+                <!-- Mode Selection -->
+                <div class="border-t border-slate-700/60 pt-5 mb-6">
+                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Modo de Juego V2</label>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <label onclick="window.app.setGameMode('classic')" id="mode-classic" class="flex items-start gap-3 p-3.5 rounded-2xl border-2 border-indigo-500 bg-indigo-950/40 cursor-pointer transition">
+                            <input type="radio" name="gameMode" value="classic" checked class="mt-1 text-indigo-500">
+                            <div>
+                                <span class="kids-font font-bold text-indigo-200 text-base">Clásico con Ruleta</span>
+                                <span class="block text-xs text-slate-400">Gira la ruleta y responde según la categoría tocada.</span>
+                            </div>
+                        </label>
+                        <label onclick="window.app.setGameMode('punishment')" id="mode-punishment" class="flex items-start gap-3 p-3.5 rounded-2xl border-2 border-slate-700 bg-slate-900/50 cursor-pointer transition">
+                            <input type="radio" name="gameMode" value="punishment" class="mt-1 text-indigo-500">
+                            <div>
+                                <span class="kids-font font-bold text-slate-200 text-base">Con Ruleta de Castigos</span>
+                                <span class="block text-xs text-slate-400">Activa retos divertidos si hay dudas o evasivas.</span>
+                            </div>
+                        </label>
+                        <label onclick="window.app.setGameMode('wildcard')" id="mode-wildcard" class="flex items-start gap-3 p-3.5 rounded-2xl border-2 border-slate-700 bg-slate-900/50 cursor-pointer transition">
+                            <input type="radio" name="gameMode" value="wildcard" class="mt-1 text-indigo-500">
+                            <div>
+                                <span class="kids-font font-bold text-slate-200 text-base">Modo Inversión de Roles</span>
+                                <span class="block text-xs text-slate-400">Permite intercambiar el rol con los adultos de la mesa.</span>
+                            </div>
+                        </label>
+                        <label onclick="window.app.setGameMode('secret')" id="mode-secret" class="flex items-start gap-3 p-3.5 rounded-2xl border-2 border-slate-700 bg-slate-900/50 cursor-pointer transition">
+                            <input type="radio" name="gameMode" value="secret" class="mt-1 text-indigo-500">
+                            <div>
+                                <span class="kids-font font-bold text-slate-200 text-base">Voto Secreto Grupal</span>
+                                <span class="block text-xs text-slate-400">Preguntas donde todos responden de forma anónima o simultánea.</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="border-t border-slate-700/60 pt-5 flex justify-between items-center gap-4">
+                    <button onclick="window.app.resetScores()" class="text-xs text-slate-400 hover:text-slate-200 font-medium underline">
+                        Reiniciar Puntajes
+                    </button>
+                    <button onclick="window.app.startGame()" id="startBtn" disabled class="bg-slate-700 text-slate-500 font-semibold px-7 py-3.5 rounded-2xl cursor-not-allowed transition flex items-center gap-2 kids-font text-lg shadow-md">
+                        ¡Comenzar V2! <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 2: GAMEPLAY & ROULETTE -->
+        <section id="view-game" class="hidden space-y-6">
+            <!-- Game Top Status Bar -->
+            <div class="bg-slate-800/90 rounded-2xl shadow-md p-4 border border-indigo-500/20 flex flex-wrap justify-between items-center gap-3 backdrop-blur-md">
+                <div class="flex items-center gap-3">
+                    <div id="currentPlayerAvatar" class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-indigo-500 to-pink-500 text-white flex items-center justify-center font-bold text-xl shadow-md kids-font">
+                        ?
+                    </div>
+                    <div>
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Turno actual</span>
+                        <h3 id="currentPlayerName" class="kids-font text-lg md:text-xl text-indigo-300 font-bold">Selecciona jugador</h3>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2.5">
+                    <span id="activeModeBadge" class="bg-indigo-950 text-indigo-300 text-xs font-bold px-3 py-1.5 rounded-full border border-indigo-800">
+                        Clásico V2
+                    </span>
+                    <div class="bg-slate-900/60 px-3.5 py-1.5 rounded-xl border border-slate-700 text-center">
+                        <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider block">Ronda</span>
+                        <span id="roundCounter" class="kids-font font-bold text-base text-white">1</span>
+                    </div>
+                    <button onclick="window.app.nextTurn()" class="bg-indigo-900/50 hover:bg-indigo-800/60 text-indigo-300 font-semibold px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 text-xs border border-indigo-700">
+                        <i class="fa-solid fa-forward-step"></i> Siguiente Turno
+                    </button>
+                </div>
+            </div>
+
+            <!-- Main Game Grid: Roulette & Question Card -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                
+                <!-- ROULETTE COLUMN -->
+                <div class="lg:col-span-5 space-y-5">
+                    <div class="bg-slate-800/90 rounded-3xl shadow-xl border border-indigo-500/20 p-5 md:p-6 flex flex-col items-center justify-center backdrop-blur-md">
+                        <div class="text-center mb-3">
+                            <h3 class="kids-font text-2xl text-white">Ruleta de Categorías</h3>
+                            <p class="text-slate-400 text-xs mt-0.5">Gira para elegir el tema de la tarjeta</p>
+                        </div>
+
+                        <!-- Canvas Roulette Container -->
+                        <div class="relative w-full max-w-[280px] aspect-square flex items-center justify-center my-2">
+                            <!-- Pointer Arrow -->
+                            <div class="absolute -top-3 z-20 text-rose-500 drop-shadow-md text-3xl">
+                                <i class="fa-solid fa-caret-down"></i>
+                            </div>
+                            <canvas id="rouletteCanvas" width="280" height="280" class="w-full h-full drop-shadow-lg cursor-pointer rounded-full"></canvas>
+                        </div>
+
+                        <button onclick="window.app.spinRoulette()" id="spinBtn" class="w-full max-w-[260px] mt-3 bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 hover:opacity-95 text-white font-bold py-3 px-5 rounded-2xl shadow-lg transition flex items-center justify-center gap-2.5 kids-font text-lg">
+                            <i class="fa-solid fa-dharmachakra"></i> ¡Girar Ruleta!
+                        </button>
+                    </div>
+
+                    <!-- PUNISHMENT ROULETTE TRIGGER CARD -->
+                    <div class="bg-gradient-to-r from-rose-950/80 to-purple-950/80 rounded-3xl shadow-xl border border-rose-500/30 p-5 backdrop-blur-md text-center space-y-3">
+                        <div class="flex items-center justify-center gap-2 text-rose-300 kids-font text-lg font-bold">
+                            <i class="fa-solid fa-gavel text-amber-400"></i> ¿Dudas o evasivas en la mesa?
+                        </div>
+                        <p class="text-slate-300 text-xs">Si alguien esquiva la verdad o no responde con sinceridad, el grupo puede enviarlo a la ruleta de castigos.</p>
+                        <button onclick="window.app.openPunishmentModal()" class="w-full bg-rose-600 hover:bg-rose-500 text-white font-bold py-2.5 px-4 rounded-xl shadow-md transition kids-font text-sm flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-dice"></i> 🎯 ¡Girar Ruleta de Castigos!
+                        </button>
+                    </div>
+                </div>
+
+                <!-- QUESTION & DYNAMICS COLUMN -->
+                <div class="lg:col-span-7 space-y-5">
+                    <!-- Category & Card Display -->
+                    <div id="cardContainer" class="bg-slate-800/90 rounded-3xl shadow-xl border border-indigo-500/20 p-6 md:p-8 relative overflow-hidden backdrop-blur-md">
+                        <!-- Top Accent Bar -->
+                        <div id="cardCategoryBar" class="absolute top-0 left-0 right-0 h-3 bg-indigo-500"></div>
+
+                        <div class="flex justify-between items-start mb-4">
+                            <span id="cardCategoryBadge" class="bg-indigo-900/60 text-indigo-300 text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full flex items-center gap-1.5 border border-indigo-700">
+                                <i class="fa-solid fa-sparkles"></i> Categoría
+                            </span>
+                            <span id="cardCounterBadge" class="text-xs font-semibold text-slate-400">Carta #--</span>
+                        </div>
+
+                        <!-- Question Text -->
+                        <div class="my-5 min-h-[100px] flex items-center">
+                            <h4 id="questionTitle" class="kids-font text-xl md:text-3xl text-white leading-snug">
+                                ¡Gira la ruleta o selecciona una categoría para empezar!
+                            </h4>
+                        </div>
+
+                        <!-- Special Wildcards Actions bar -->
+                        <div class="flex flex-wrap gap-2 mb-4 bg-slate-900/50 p-3 rounded-2xl border border-slate-700/80 items-center justify-between">
+                            <span class="text-xs font-bold text-slate-400"><i class="fa-solid fa-wand-magic-sparkles text-cyan-400"></i> Opciones especiales:</span>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="window.app.useRoleReversal()" class="px-3 py-1.5 bg-indigo-950 hover:bg-indigo-900 text-indigo-300 border border-indigo-700 rounded-xl text-xs font-semibold transition">
+                                    🔄 Cambio de Lado
+                                </button>
+                                <button onclick="window.app.triggerSecretVote()" class="px-3 py-1.5 bg-purple-950 hover:bg-purple-900 text-purple-300 border border-purple-700 rounded-xl text-xs font-semibold transition">
+                                    🗳️ Voto Secreto
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons / Scoring -->
+                        <div class="border-t border-slate-700/60 pt-5 flex flex-wrap items-center justify-between gap-3">
+                            <div class="text-xs text-slate-400 italic">
+                                <i class="fa-solid fa-shield-halved text-cyan-400"></i> <strong>Zona Segura:</strong> Cero juzgamientos ni sermones.
+                            </div>
+
+                            <div class="flex items-center gap-2.5">
+                                <button onclick="window.app.awardPoints(1)" id="awardBtn" disabled class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-5 py-2.5 rounded-xl shadow-md transition flex items-center gap-2 kids-font text-base disabled:opacity-40 disabled:cursor-not-allowed">
+                                    <i class="fa-solid fa-star text-yellow-300"></i> ¡Sumar +1 Punto!
+                                </button>
+                                <button onclick="window.app.drawCardForCategory()" id="anotherCardBtn" disabled class="bg-slate-700 hover:bg-slate-600 text-slate-200 font-semibold px-4 py-2.5 rounded-xl transition text-xs md:text-sm disabled:opacity-40 disabled:cursor-not-allowed">
+                                    Otra carta
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category Quick Select Override -->
+                    <div class="bg-slate-800/90 rounded-2xl shadow-md border border-indigo-500/20 p-4">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2.5">Seleccionar categoría V2 manualmente</span>
+                        <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
+                            <button onclick="window.app.selectCategoryManual('Máscaras y Mitos Sociales')" class="p-2.5 rounded-xl text-xs font-semibold bg-indigo-950/40 hover:bg-indigo-900/60 text-indigo-300 border border-indigo-800 transition text-center truncate">
+                                Máscaras
+                            </button>
+                            <button onclick="window.app.selectCategoryManual('La Mente Detrás de la Fachada')" class="p-2.5 rounded-xl text-xs font-semibold bg-purple-950/40 hover:bg-purple-900/60 text-purple-300 border border-purple-800 transition text-center truncate">
+                                Mente
+                            </button>
+                            <button onclick="window.app.selectCategoryManual('Secretos y Límites Reales')" class="p-2.5 rounded-xl text-xs font-semibold bg-pink-950/40 hover:bg-pink-900/60 text-pink-300 border border-pink-800 transition text-center truncate">
+                                Secretos
+                            </button>
+                            <button onclick="window.app.selectCategoryManual('El Abismo Generacional')" class="p-2.5 rounded-xl text-xs font-semibold bg-cyan-950/40 hover:bg-cyan-900/60 text-cyan-300 border border-cyan-800 transition text-center truncate">
+                                Generaciones
+                            </button>
+                            <button onclick="window.app.selectCategoryManual('La Vida Real Sin Filtros')" class="p-2.5 rounded-xl text-xs font-semibold bg-amber-950/40 hover:bg-amber-900/60 text-amber-300 border border-amber-800 transition text-center truncate col-span-2 sm:col-span-1">
+                                Sin Filtros
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- VIEW 3: RANKING & SCOREBOARD -->
+        <section id="view-ranking" class="hidden space-y-6">
+            <div class="bg-slate-800/90 rounded-3xl shadow-xl border border-indigo-500/20 p-6 md:p-8 max-w-3xl mx-auto backdrop-blur-md">
+                <div class="text-center mb-6">
+                    <div class="inline-block bg-yellow-900/50 p-3.5 rounded-2xl text-yellow-300 mb-2 border border-yellow-700">
+                        <i class="fa-solid fa-trophy text-3xl"></i>
+                    </div>
+                    <h2 class="kids-font text-3xl text-white">Tabla de Participación V2</h2>
+                    <p class="text-slate-400 text-sm mt-1">¡Reconocimiento al valor de abrirse y conversar sin filtros!</p>
+                </div>
+
+                <div id="rankingList" class="space-y-3 mb-8">
+                    <!-- Rendered dynamically -->
+                </div>
+
+                <div class="flex justify-between items-center border-t border-slate-700/60 pt-6">
+                    <button onclick="window.app.resetScores()" class="text-xs md:text-sm text-rose-400 hover:text-rose-300 font-semibold flex items-center gap-2">
+                        <i class="fa-solid fa-arrow-rotate-left"></i> Reiniciar Puntajes
+                    </button>
+                    <button onclick="window.app.switchView('game')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-6 py-3 rounded-2xl transition kids-font text-base md:text-lg shadow-lg">
+                        Volver al Juego <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 4: RULES & INSTRUCTIONS -->
+        <section id="view-rules" class="hidden space-y-6">
+            <div class="bg-slate-800/90 rounded-3xl shadow-xl border border-indigo-500/20 p-6 md:p-8 max-w-4xl mx-auto backdrop-blur-md">
+                <div class="text-center mb-8">
+                    <span class="bg-indigo-900/60 text-indigo-300 text-xs font-bold uppercase tracking-wider px-3.5 py-1 rounded-full border border-indigo-700">Reglamento Oficial V2</span>
+                    <h2 class="kids-font text-3xl md:text-4xl text-white mt-2">Cuestión de Realidad V2</h2>
+                    <p class="text-slate-400 text-sm mt-1">Verdades Incómodas, Mitos Sociales y Ruleta de Castigos Lúdicos.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+                    <div class="bg-slate-900/60 p-5 rounded-2xl border border-slate-700 space-y-2">
+                        <div class="flex items-center gap-2.5 text-cyan-400 kids-font text-lg font-bold">
+                            <i class="fa-solid fa-shield-halved text-xl"></i> 1. Cero Juzgamiento
+                        </div>
+                        <p class="text-slate-300 text-xs leading-relaxed">
+                            Ninguna respuesta del juego puede usarse fuera de la mesa para sermones, castigos o reproches en la vida real.
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-900/60 p-5 rounded-2xl border border-slate-700 space-y-2">
+                        <div class="flex items-center gap-2.5 text-pink-400 kids-font text-lg font-bold">
+                            <i class="fa-solid fa-dice text-xl"></i> 2. Ruleta de Castigos
+                        </div>
+                        <p class="text-slate-300 text-xs leading-relaxed">
+                            Si alguien evade una pregunta o el grupo detecta falsedad, se gira la ruleta de castigos para un reto inocente y divertido.
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-900/60 p-5 rounded-2xl border border-slate-700 space-y-2">
+                        <div class="flex items-center gap-2.5 text-amber-400 kids-font text-lg font-bold">
+                            <i class="fa-solid fa-wand-magic-sparkles text-xl"></i> 3. Cambio de Lado
+                        </div>
+                        <p class="text-slate-300 text-xs leading-relaxed">
+                            El adolescente puede usar su comodín para interrogar a los adultos desde su propia perspectiva y vivencias.
+                        </p>
+                    </div>
+                </div>
+
+                <h3 class="kids-font text-xl text-white mb-4">Las 5 Categorías de la Versión 2 (150 Preguntas)</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                    <div class="p-4 rounded-2xl bg-indigo-950/40 border border-indigo-800">
+                        <h4 class="kids-font text-indigo-300 font-bold mb-1"><i class="fa-solid fa-mask mr-1"></i> 🎭 Máscaras y Mitos Sociales</h4>
+                        <p class="text-xs text-slate-400">Posturas en redes, apariencias, encajar y expectativas sociales.</p>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-purple-950/40 border border-purple-800">
+                        <h4 class="kids-font text-purple-300 font-bold mb-1"><i class="fa-solid fa-brain mr-1"></i> 🧠 La Mente Detrás de la Fachada</h4>
+                        <p class="text-xs text-slate-400">Inseguridades, cuerpo, autoestima y dudas no habladas.</p>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-pink-950/40 border border-pink-800">
+                        <h4 class="kids-font text-pink-300 font-bold mb-1"><i class="fa-solid fa-handshake mr-1"></i> 🤝 Secretos y Límites Reales</h4>
+                        <p class="text-xs text-slate-400">Presión de grupo, aprender a decir NO, límites personales.</p>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-cyan-950/40 border border-cyan-800">
+                        <h4 class="kids-font text-cyan-300 font-bold mb-1"><i class="fa-solid fa-house-user mr-1"></i> 🏠 El Abismo Generacional</h4>
+                        <p class="text-xs text-slate-400">Entendimiento mutuo entre la juventud del pasado y la actual.</p>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-amber-950/40 border border-amber-800 sm:col-span-2 lg:col-span-1">
+                        <h4 class="kids-font text-amber-300 font-bold mb-1"><i class="fa-solid fa-fire mr-1"></i> 🌶️ La Vida Real Sin Filtros</h4>
+                        <p class="text-xs text-slate-400">Dilemas picantes, irónicos y decisiones límite sin rodeos.</p>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button onclick="window.app.switchView('game')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-8 py-3.5 rounded-2xl transition kids-font text-lg shadow-lg">
+                        ¡Entendido, jugar V2! <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900/80 border-t border-slate-800 py-5 text-center text-xs text-slate-400 backdrop-blur-md">
+        <p>Cuestión de Realidad V2 • Aplicación Didáctica Vincular con Ruleta de Castigos</p>
+    </footer>
+
+    <!-- MODAL / MESSAGE BOX -->
+    <div id="customModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-800 rounded-3xl shadow-2xl max-w-md w-full p-6 text-center transform transition-all scale-95 opacity-0 duration-200 border border-indigo-500/20" id="modalBox">
+            <div id="modalIconContainer" class="w-16 h-16 rounded-full bg-indigo-900/60 text-indigo-300 flex items-center justify-center text-3xl mx-auto mb-4 border border-indigo-700">
+                <i id="modalIcon" class="fa-solid fa-circle-check"></i>
+            </div>
+            <h3 id="modalTitle" class="kids-font text-2xl text-white mb-2">¡Aviso!</h3>
+            <p id="modalMessage" class="text-slate-300 text-sm mb-6 leading-relaxed">Mensaje descriptivo aquí.</p>
+            <button onclick="window.app.closeModal()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 rounded-2xl transition kids-font text-lg">
+                Entendido
+            </button>
+        </div>
+    </div>
+
+    <!-- PUNISHMENT ROULETTE MODAL -->
+    <div id="punishmentModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 rounded-3xl shadow-2xl max-w-lg w-full p-6 text-center border border-rose-500/30 relative">
+            <button onclick="window.app.closePunishmentModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="w-14 h-14 rounded-full bg-rose-950 text-rose-400 flex items-center justify-center text-2xl mx-auto mb-3 border border-rose-800">
+                <i class="fa-solid fa-gavel"></i>
+            </div>
+            <h3 class="kids-font text-2xl text-white mb-1">Ruleta de Castigos</h3>
+            <p class="text-slate-400 text-xs mb-5">¡Reto lúdico e inocente por evasión o duda en la respuesta!</p>
+
+            <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 min-h-[120px] flex items-center justify-center mb-5">
+                <p id="punishmentResultText" class="kids-font text-xl text-amber-300">¡Pulsa el botón para sortear el castigo!</p>
+            </div>
+
+            <div class="flex gap-3">
+                <button onclick="window.app.spinPunishmentWheel()" id="spinPunishmentBtn" class="flex-1 bg-rose-600 hover:bg-rose-500 text-white font-semibold py-3 rounded-2xl transition kids-font text-base shadow-lg">
+                    🎲 ¡Girar Castigo!
+                </button>
+                <button onclick="window.app.closePunishmentModal()" class="px-5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold py-3 rounded-2xl transition text-sm">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- APPLICATION LOGIC, AUDIO SYNTHESIZER & DATA V2 -->
+    <script>
+        // FULL 150 TEEN QUESTIONS BANK FOR VERSION 2 (30 per category)
+        const QUESTION_BANK = {
+            "Máscaras y Mitos Sociales": [
+                "¿Cuál es la mentira más grande que la gente suele publicar en redes sociales para verse bien?",
+                "¿Qué moda o tendencia actual te parece completamente ridícula aunque todos la sigan?",
+                "Si pudieras borrar una red social para siempre del mundo, ¿cuál elegirías y por qué?",
+                "¿Alguna vez fingiste que te gustaba algo solo para encajar en un grupo? ¿Qué fue?",
+                "¿Qué prejuicio crees que tienen los adultos sobre los adolescentes que es totalmente falso?",
+                "¿Qué prejuicio tienen los jóvenes sobre los adultos que la realidad desmiente?",
+                "¿Por qué crees que nos cuesta tanto decir 'no sé' cuando alguien nos pregunta algo?",
+                "¿Qué es lo más hipócrita que has escuchado decir a alguien popular?",
+                "¿De qué te da vergüenza enterarte que te importa demasiado la opinión de los demás?",
+                "Si el dinero y el qué dirán no existieran, ¿cómo te vestirías mañana?",
+                "¿Qué etiqueta o estereotipo te han colocado alguna vez y te molestó muchísimo?",
+                "¿Qué opinas de la gente que juzga a otros por las marcas de su ropa o su teléfono?",
+                "Cuál es el mito más absurdo sobre el amor romántico que nos venden las películas?",
+                "¿Qué consejo sobre la 'reputación' te parece completamente tóxico?",
+                "¿Alguna vez caíste en la trampa de comprar algo solo por el marketing o la publicidad?",
+                "¿Qué significa hoy en día 'ser exitoso' según la sociedad versus lo que significa para ti?",
+                "¿Por qué nos da tanto miedo quedar en ridículo frente a personas que ni siquiera nos importan?",
+                "¿Qué regla social o de buenos modales te parece una pérdida total de tiempo?",
+                "¿Qué opinas de los filtros de belleza en las fotos? ¿Sientes presión por usarlos?",
+                "¿Cuál es la mayor farsa que nos enseñan en la escuela sobre cómo funciona el mundo real?",
+                "¿Qué opinas de la exigencia constante de tener que estar siempre feliz y productivo?",
+                "¿Qué tendencia o música de tus padres te parece incuestionablemente mejor que la actual?",
+                "¿Por qué juzgamos tan rápido a alguien la primera vez que lo vemos?",
+                "¿Qué mentira te decías a ti mismo/a para sentirte mejor el año pasado?",
+                "¿Qué opinas de los 'influencers' que venden estilos de vida imposibles?",
+                "¿Cuál es el peor consejo que un adulto le puede dar a un joven hoy en día?",
+                "¿Qué aspecto de tu propia personalidad te costó aceptar por culpa de lo que dice la sociedad?",
+                "¿Por qué nos cuesta tanto reconocer cuando nos equivocamos en público?",
+                "¿Qué significa para ti tener 'clase' o elegancia en el siglo XXI?",
+                "Si pudieras romper una norma social sin consecuencias legales, ¿cuál romperías?"
+            ],
+            "La Mente Detrás de la Fachada": [
+                "¿Cuál es el pensamiento repetitivo que más te agobia cuando estás a solas en tu cuarto?",
+                "¿Qué parte de tu cuerpo o de tu físico es la que menos te gusta y por qué?",
+                "¿Alguna vez sentiste que estabas sufriendo un ataque de ansiedad o pánico? ¿Cómo lo manejaste?",
+                "¿Qué es lo que más te da miedo del futuro y de convertirte en adulto?",
+                "¿Cómo reaccionas internamente cuando sientes que nadie te entiende?",
+                "¿Qué actividad o hábito tienes para escapar de la realidad cuando te abruma?",
+                "¿Cuál ha sido el cumplido más lindo que te han hecho y que todavía recuerdas?",
+                "¿Qué es lo que más te cuesta perdonarte a ti mismo/a?",
+                "¿Qué emoción te da más vergüenza mostrarle a tu familia: tristeza, enojo o miedo?",
+                "¿Alguna vez fingiste una sonrisa gigante mientras por dentro sentías que te derrumbabas?",
+                "¿Qué te hace sentir absolutamente vulnerable frente a los demás?",
+                "¿Qué es lo que más te molesta que te digan cuando estás de mal humor?",
+                "¿Cómo diferencias el cansancio físico del cansancio mental o emocional?",
+                "¿Qué canción escuchas cuando necesitas desahogarte y llorar a solas?",
+                "¿Qué expectativas de tus padres sientes que son una carga muy pesada de llevar?",
+                "¿Alguna vez sentiste que no encajas en ningún lado, ni siquiera con tus amigos?",
+                "¿Qué pequeño detalle de tu día a día puede arruinarte el humor por completo?",
+                "¿Qué miedo irracional o tonto tienes desde que eras niño/a?",
+                "¿Cómo te imaginas tu peor pesadilla hecha realidad en el ámbito personal?",
+                "¿Qué te hace sentir verdaderamente en paz contigo mismo/a?",
+                "¿Qué crítica constructiva dolió como si fuera un ataque personal?",
+                "¿Qué parte de tu infancia extrañas con el alma y desearías recuperar?",
+                "¿Qué harías hoy mismo si tuvieras la absoluta certeza de que nadie te va a juzgar?",
+                "¿Cómo descargas la frustración cuando sientes que todo te sale mal?",
+                "¿Qué significa para ti ser 'valiente' en tu vida cotidiana?",
+                "¿Qué secreto guardas celosamente porque temes que si alguien lo sabe te rechace?",
+                "¿Qué te hace perder la fe en la humanidad aunque sea por un momento?",
+                "¿Qué palabras necesitas escuchar con urgencia cuando estás atravesando un mal día?",
+                "¿Cómo manejas la culpa cuando lastimaste a alguien sin querer?",
+                "Si tu mente fuera una habitación, ¿cómo se vería en este preciso instante?"
+            ],
+            "Secretos y Límites Reales": [
+                "¿Alguna vez dijiste que 'sí' a algo peligroso o incómodo solo por miedo a que te excluyeran?",
+                "¿Cómo pones límites cuando alguien cruza la raya y te invade tu privacidad?",
+                "¿Qué harías si descubres que un amigo/a tuyo está metido en un grave problema y te pide silencio?",
+                "¿Qué opinas de la frase 'el que no arriesga no gana' aplicada a situaciones de riesgo adolescente?",
+                "¿Qué herramientas reales tenemos los jóvenes para decir 'basta' ante la presión grupal?",
+                "¿Alguna vez te sentiste acosado/a o intimidado/a en internet y no supiste cómo reaccionar?",
+                "¿Qué diferencia hay entre un secreto inofensivo y un secreto peligroso que se debe contar?",
+                "¿Cómo actúas cuando presencias una injusticia o bullying hacia alguien más débil?",
+                "¿Qué límite jamás permitirías que un amigo, pareja o familiar cruce contigo?",
+                "¿Por qué nos cuesta tanto pedir ayuda profesional (psicólogo, médico) cuando la necesitamos?",
+                "¿Qué opinas de las personas que obligan a otros a hacer cosas que no quieren en nombre de una broma?",
+                "¿Alguna vez experimentaste una situación donde sentiste peligro físico y saliste gracias a tu instinto?",
+                "¿Cómo se construye una amistad basada en el respeto y no en el control?",
+                "¿Qué harías si notas que un familiar tuyo está pasando por un momento de adicción o depresión oculta?",
+                "¿Qué significa la privacidad en la era digital para una familia? ¿Dónde empieza el control y dónde el respeto?",
+                "¿Qué opinas de los rumores falsos que se esparcen en los colegios o redes sociales?",
+                "¿Cómo aprendiste a identificar quiénes son tus amigos reales y quiénes son de mentira?",
+                "¿Qué harías si te invitan a una fiesta donde sabes que habrá situaciones ilegales o peligrosas?",
+                "¿Qué consejo le darías a un amigo que se deja manipular por su pareja?",
+                "¿Por qué nos da tanta culpa poner nuestras propias necesidades antes que las de los demás?",
+                "¿Qué opinas del consumo de alcohol o sustancias en fiestas juveniles? ¿Hay presión real?",
+                "¿Cómo reaccionas cuando un adulto te interroga en vez de conversar contigo?",
+                "¿Qué es lo más difícil de mantener un secreto cuando sabes que le hace daño a alguien?",
+                "¿Qué harías si ves que alguien roba algo pequeño en una tienda?",
+                "¿Cómo se maneja la lealtad cuando un amigo comete un error grave?",
+                "¿Qué significa tener autonomía real sobre tu propio cuerpo y tus decisiones?",
+                "¿Alguna vez te mintieron de forma descarada para manipularte? ¿Cómo te diste cuenta?",
+                "¿Qué harías si un desconocido te contacta por redes con intenciones extrañas?",
+                "¿Por qué nos cuesta tanto denunciar o hablar cuando algo no nos gusta por miedo a ser el 'sapo'?",
+                "¿Qué límite te costó más poner en tu vida y qué ganaste al hacerlo?"
+            ],
+            "El Abismo Generacional": [
+                "(Para adultos) ¿Qué era lo más estúpido que hacían tus padres cuando eras adolescente y tú juraste no repetir?",
+                "(Para jóvenes) Si pudieras intercambiar un día de tu vida con la adolescencia de tus padres, ¿lo harías? ¿Por qué?",
+                "¿Qué costumbre o forma de hablar de los jóvenes de hoy les parece insoportable a los adultos?",
+                "¿Qué tecnología o hábito de los adultos les parece totalmente incomprensible a los jóvenes?",
+                "¿Por qué los adultos siempre creen que los jóvenes están arruinando su futuro con las pantallas?",
+                "¿Qué pregunta te da terror que tus padres te hagan sobre tu vida privada?",
+                "¿Qué te gustaría que tus padres te pregunten más seguido en lugar de cómo te fue en el colegio o trabajo?",
+                "¿Qué es lo que más te asusta de envejecer y perder la energía de la juventud?",
+                "¿Cómo era el concepto de 'diversión' en la época de los adultos versus la actual?",
+                "¿Qué te enseñó un desacuerdo fuerte que tuviste con alguien de otra generación?",
+                "¿Por qué los adultos minimizan los problemas de los jóvenes diciendo que 'eso no es nada'?",
+                "¿Qué tradición familiar te parece totalmente obsoleta y por qué deberíamos eliminarla?",
+                "¿Qué opinas de la forma en que los adultos manejan su propio estrés financiero y laboral?",
+                "¿Qué te gustaría heredar de la personalidad de tus padres y de qué te gustaría librarte?",
+                "¿Cómo se imaginan los adultos el mundo dentro de 20 años y cómo se lo imaginan los jóvenes?",
+                "¿Qué palabra o jerga juvenil te causa más gracia escuchar en boca de un adulto?",
+                "¿Por qué los adultos sienten la necesidad de dar consejos no pedidos todo el tiempo?",
+                "¿Qué gran logro de los jóvenes actuales los adultos no saben valorar?",
+                "¿Qué gran valor de los adultos de antes se ha perdido en la actualidad?",
+                "Si pudieras escribir una carta anónima a tus padres sobre lo que callas, ¿qué diría la primera línea?",
+                "¿Qué es lo que más te enternece ver en la generación anterior?",
+                "¿Cómo ha cambiado el concepto de 'autoridad' en la familia en comparación con el siglo pasado?",
+                "¿Qué es lo más difícil de entenderse cuando los dos bandos están convencidos de tener la razón?",
+                "¿Qué broma intergeneracional te hace reír a carcajadas?",
+                "¿Qué te gustaría que los adultos recuerden de cuando tenían 15 años?",
+                "¿Por qué nos cuesta tanto pedir perdón a los miembros de la familia después de una pelea?",
+                "¿Qué rol juegan los abuelos como puente entre dos mundos tan diferentes?",
+                "¿Qué hábito de los jóvenes crees que será considerado normal en el futuro?",
+                "¿Qué le dirías a tu versión de dentro de 20 años si pudieras mandarle un mensaje de WhatsApp?",
+                "¿Qué significa realmente 'pertenecer' a una familia en los tiempos modernos?"
+            ],
+            "La Vida Real Sin Filtros": [
+                "Si te dan a elegir entre decir una verdad dolorosa o una mentira piadosa que no daña a nadie, ¿con qué te quedas?",
+                "¿Qué harías si te encuentras una billetera llena de dinero en la calle sin cámaras alrededor?",
+                "¿Cuál es el peor hábito que tienes y que intentas ocultar a toda costa?",
+                "Si pudieras eliminar un defecto de tu carácter de forma instantánea, ¿cuál elegirías?",
+                "¿Qué opinas de las personas que siempre se hacen las víctimas para llamar la atención?",
+                "¿Cuál es la mayor locura o estupidez que cometiste por un capricho?",
+                "¿Qué harías si descubres que tu mejor amigo/a te traicionó a tus espaldas?",
+                "¿Qué te parece más insoportable: la impuntualidad, la mentira o la mezquindad?",
+                "Si pudieras saber la fecha exacta en que vas a morir, ¿lo averiguarías?",
+                "¿Qué es lo más extravagante que comprarías si ganaras la lotería hoy mismo?",
+                "¿Qué opinas de la gente que se enoja cuando pierden hasta en un juego de mesa familiar?",
+                "¿Cuál es tu teoría conspirativa favorita o más absurda en la que secretamente crees un poco?",
+                "¿Qué harías si te dejan encerrado/a en un supermercado gigante durante todo un fin de semana?",
+                "¿Qué comida odias con toda el alma a pesar de que a todo el mundo le parece deliciosa?",
+                "Si tu vida fuera un libro, ¿cuál sería el título del capítulo más caótico que viviste este año?",
+                "¿Qué habilidad inútil pero genial posees y te encanta presumir?",
+                "¿Cuál es el peor peinado o look que llevaste en tu vida y del que hoy te avergüenzas?",
+                "¿Qué harías si te enteras de que eres el heredero secreto de un imperio millonario?",
+                "¿Qué personaje de villano de película te cae mejor que el héroe y por qué?",
+                "¿Qué palabra te parece la más fea de escuchar en cualquier idioma?",
+                "¿Cuál es el peor regalo que has recibido y cómo disimulaste tu cara de decepción?",
+                "Si pudieras viajar a cualquier planeta exótico pero sin retorno a la Tierra, ¿irías?",
+                "¿Qué animal serías si tuvieras que reflejar tu estado de ánimo de los lunes por la mañana?",
+                "¿Qué manía o TOC extraño tienes al dormir o al ordenar tus cosas?",
+                "Si tuvieras que comer una sola cosa salada por el resto de tu vida, ¿qué elegirías?",
+                "¿Qué canción te da vergüenza admitir que te encanta cantar a los gritos en la ducha?",
+                "¿Qué harías si de repente todos los dispositivos electrónicos del mundo desaparecieran por un año?",
+                "¿Cuál es el chiste más malo que te hace reír siempre sin importar cuántas veces lo escuches?",
+                "Si pudieras tener un superpoder completamente inútil, ¿cuál preferirías?",
+                "¿Qué frase o lema define tu filosofía actual ante los problemas de la vida?"
+            ]
+        };
+
+        const CATEGORY_COLORS = {
+            "Máscaras y Mitos Sociales": "#6366f1",
+            "La Mente Detrás de la Fachada": "#a855f7",
+            "Secretos y Límites Reales": "#ec4899",
+            "El Abismo Generacional": "#06b6d4",
+            "La Vida Real Sin Filtros": "#f59e0b"
+        };
+
+        const PUNISHMENT_LIST = [
+            "🎭 Imita a un profesor o jefe estricto durante 15 segundos.",
+            "💬 Cuenta una anécdota vergonzosa de tu infancia sin reírte.",
+            "💪 Haz 5 sentadillas o flexiones aplaudiendo en cada subida.",
+            "🎤 Canta el estribillo de tu canción menos favorita con voz de ópera.",
+            "🤪 Pon tu cara más graciosa y mantén la pose durante 10 segundos.",
+            "📱 Deja que alguien del grupo lea la última nota guardada en tu celular.",
+            "🔮 Inventa una predicción absurda sobre el futuro del jugador de tu izquierda.",
+            "🤖 Camina como robot por toda la habitación hasta volver a tu lugar.",
+            "🤝 Abraza al jugador de tu derecha y dile un cumplido exagerado.",
+            "🤫 Di un trabalenguas rápido en voz alta sin trabarte."
+        ];
+
+        // Synthesized Audio Effects using Web Audio API
+        class SoundFX {
+            constructor() {
+                this.ctx = null;
+                this.enabled = true;
+            }
+
+            init() {
+                if (!this.ctx) {
+                    const AudioContext = window.AudioContext || window.webkitAudioContext;
+                    if (AudioContext) {
+                        this.ctx = new AudioContext();
+                    }
+                }
+                if (this.ctx && this.ctx.state === 'suspended') {
+                    this.ctx.resume();
+                }
+            }
+
+            playTick() {
+                if (!this.enabled) return;
+                this.init();
+                if (!this.ctx) return;
+
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(500, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(120, this.ctx.currentTime + 0.04);
+                
+                gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.04);
+
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.04);
+            }
+
+            playFanfare() {
+                if (!this.enabled) return;
+                this.init();
+                if (!this.ctx) return;
+
+                const notes = [293.66, 369.99, 440.00, 587.33]; // D4, F#4, A4, D5
+                notes.forEach((freq, idx) => {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, this.ctx.currentTime + idx * 0.08);
+
+                    gain.gain.setValueAtTime(0, this.ctx.currentTime + idx * 0.08);
+                    gain.gain.linearRampToValueAtTime(0.2, this.ctx.currentTime + idx * 0.08 + 0.02);
+                    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + idx * 0.08 + 0.3);
+
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(this.ctx.currentTime + idx * 0.08);
+                    osc.stop(this.ctx.currentTime + idx * 0.08 + 0.3);
+                });
+            }
+
+            playScorePoint() {
+                if (!this.enabled) return;
+                this.init();
+                if (!this.ctx) return;
+
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523.25, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(1046.50, this.ctx.currentTime + 0.2);
+
+                gain.gain.setValueAtTime(0.25, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.25);
+
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.25);
+            }
+        }
+
+        class RealityGameV2App {
+            constructor() {
+                this.participants = JSON.parse(localStorage.getItem('reality_v2_participants')) || [];
+                this.currentTurnIndex = 0;
+                this.round = parseInt(localStorage.getItem('reality_v2_round')) || 1;
+                this.gameMode = localStorage.getItem('reality_v2_mode') || 'classic';
+                this.theme = localStorage.getItem('reality_v2_theme') || 'dark';
+                this.soundFX = new SoundFX();
+                
+                this.currentCategory = null;
+                this.currentQuestionIndex = null;
+                this.isSpinning = false;
+
+                this.initApp();
+            }
+
+            initApp() {
+                this.applyTheme(this.theme);
+                this.renderParticipantsList();
+                this.updateStartButton();
+                this.initRouletteCanvas();
+                this.setGameMode(this.gameMode);
+            }
+
+            toggleTheme() {
+                this.theme = (this.theme === 'light') ? 'dark' : 'light';
+                localStorage.setItem('reality_v2_theme', this.theme);
+                this.applyTheme(this.theme);
+            }
+
+            applyTheme(theme) {
+                const icon = document.getElementById('themeIcon');
+                if (theme === 'dark') {
+                    document.documentElement.classList.add('dark');
+                    if (icon) icon.className = 'fa-solid fa-sun text-yellow-300 text-lg';
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    if (icon) icon.className = 'fa-solid fa-moon text-yellow-300 text-lg';
+                }
+                setTimeout(() => this.drawRoulette(0), 20);
+            }
+
+            toggleSound() {
+                this.soundFX.enabled = !this.soundFX.enabled;
+                const icon = document.getElementById('soundIcon');
+                const btn = document.getElementById('soundBtn');
+                if (this.soundFX.enabled) {
+                    icon.className = 'fa-solid fa-volume-high text-lg';
+                    btn.classList.replace('text-rose-300', 'text-emerald-300');
+                } else {
+                    icon.className = 'fa-solid fa-volume-xmark text-lg';
+                    btn.classList.replace('text-emerald-300', 'text-rose-300');
+                }
+            }
+
+            setGameMode(mode) {
+                this.gameMode = mode;
+                localStorage.setItem('reality_v2_mode', mode);
+
+                ['classic', 'punishment', 'wildcard', 'secret'].forEach(m => {
+                    const label = document.getElementById(`mode-${m}`);
+                    if (label) {
+                        if (m === mode) {
+                            label.className = 'flex items-start gap-3 p-3.5 rounded-2xl border-2 border-indigo-500 bg-indigo-950/40 cursor-pointer transition';
+                            const radio = label.querySelector('input');
+                            if (radio) radio.checked = true;
+                        } else {
+                            label.className = 'flex items-start gap-3 p-3.5 rounded-2xl border-2 border-slate-700 bg-slate-900/50 cursor-pointer transition';
+                        }
+                    }
+                });
+
+                const badge = document.getElementById('activeModeBadge');
+                if (badge) {
+                    const modeLabels = { classic: 'Clásico V2', punishment: 'Con Castigos', wildcard: 'Inversión de Roles', secret: 'Voto Secreto' };
+                    badge.textContent = modeLabels[mode] || 'Clásico V2';
+                }
+            }
+
+            switchView(viewName) {
+                ['setup', 'game', 'ranking', 'rules'].forEach(v => {
+                    const el = document.getElementById(`view-${v}`);
+                    if (el) el.classList.add('hidden');
+                });
+
+                const target = document.getElementById(`view-${viewName}`);
+                if (target) {
+                    target.classList.remove('hidden');
+                }
+
+                ['setup', 'game', 'ranking', 'rules'].forEach(v => {
+                    const btn = document.getElementById(`nav${v.charAt(0).toUpperCase() + v.slice(1)}Btn`);
+                    if (btn) {
+                        if (v === viewName) {
+                            btn.classList.add('bg-white/20', 'shadow-inner');
+                        } else {
+                            btn.classList.remove('bg-white/20', 'shadow-inner');
+                        }
+                    }
+                });
+
+                if (viewName === 'game') {
+                    setTimeout(() => this.drawRoulette(0), 50);
+                    if (this.participants.length > 0) {
+                        this.updateCurrentPlayerDisplay();
+                    }
+                }
+
+                if (viewName === 'ranking') {
+                    this.renderRankingList();
+                }
+            }
+
+            addParticipant(e) {
+                if (e) e.preventDefault();
+                const input = document.getElementById('participantNameInput');
+                if (!input) return;
+                const name = input.value.trim();
+
+                if (!name) return;
+
+                if (this.participants.some(p => p.name.toLowerCase() === name.toLowerCase())) {
+                    this.showModal('Participante Duplicado', 'Ya existe un participante con ese nombre.', 'fa-triangle-exclamation');
+                    return;
+                }
+
+                this.participants.push({
+                    id: Date.now().toString(),
+                    name: name,
+                    score: 0
+                });
+
+                input.value = '';
+                this.saveState();
+                this.renderParticipantsList();
+                this.updateStartButton();
+            }
+
+            removeParticipant(id) {
+                this.participants = this.participants.filter(p => p.id !== id);
+                if (this.currentTurnIndex >= this.participants.length) {
+                    this.currentTurnIndex = 0;
+                }
+                this.saveState();
+                this.renderParticipantsList();
+                this.updateStartButton();
+            }
+
+            clearParticipants() {
+                if (this.participants.length === 0) return;
+                this.participants = [];
+                this.currentTurnIndex = 0;
+                this.round = 1;
+                this.saveState();
+                this.renderParticipantsList();
+                this.updateStartButton();
+            }
+
+            resetScores() {
+                this.participants.forEach(p => p.score = 0);
+                this.round = 1;
+                this.saveState();
+                this.renderParticipantsList();
+                this.renderRankingList();
+                this.showModal('Puntajes Restablecidos', 'Todos los puntajes han vuelto a 0.', 'fa-rotate-right');
+            }
+
+            renderParticipantsList() {
+                const listEl = document.getElementById('participantsList');
+                const countEl = document.getElementById('participantCount');
+                if (!listEl || !countEl) return;
+
+                countEl.textContent = this.participants.length;
+
+                if (this.participants.length === 0) {
+                    listEl.innerHTML = `
+                        <div class="text-center py-6 bg-slate-900/40 rounded-2xl border border-dashed border-slate-700">
+                            <i class="fa-solid fa-users text-2xl text-slate-500 mb-1"></i>
+                            <p class="text-slate-400 text-xs">No hay participantes agregados todavía.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                listEl.innerHTML = this.participants.map((p, idx) => `
+                    <div class="flex items-center justify-between p-3 bg-slate-900/50 hover:bg-slate-900/80 rounded-2xl border border-slate-700 transition">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-8 h-8 rounded-xl bg-indigo-900/60 text-indigo-300 flex items-center justify-center font-bold kids-font text-xs border border-indigo-700">
+                                #${idx + 1}
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-slate-100 text-xs md:text-sm">${this.escapeHTML(p.name)}</h4>
+                                <span class="text-[11px] text-indigo-400 font-medium"><i class="fa-solid fa-star text-yellow-400 mr-1"></i> ${p.score} pts</span>
+                            </div>
+                        </div>
+                        <button onclick="window.app.removeParticipant('${p.id}')" class="text-slate-400 hover:text-rose-400 p-1.5 rounded-xl transition" title="Eliminar">
+                            <i class="fa-solid fa-trash-can text-xs"></i>
+                        </button>
+                    </div>
+                `).join('');
+            }
+
+            updateStartButton() {
+                const btn = document.getElementById('startBtn');
+                if (!btn) return;
+
+                if (this.participants.length > 0) {
+                    btn.disabled = false;
+                    btn.classList.remove('bg-slate-700', 'text-slate-500', 'cursor-not-allowed');
+                    btn.classList.add('bg-indigo-600', 'hover:bg-indigo-500', 'text-white', 'shadow-lg');
+                } else {
+                    btn.disabled = true;
+                    btn.classList.add('bg-slate-700', 'text-slate-500', 'cursor-not-allowed');
+                    btn.classList.remove('bg-indigo-600', 'hover:bg-indigo-500', 'text-white', 'shadow-lg');
+                }
+            }
+
+            startGame() {
+                if (this.participants.length === 0) {
+                    this.showModal('Faltan Participantes', 'Agrega al menos un participante para comenzar.', 'fa-triangle-exclamation');
+                    return;
+                }
+                this.switchView('game');
+                this.updateCurrentPlayerDisplay();
+            }
+
+            updateCurrentPlayerDisplay() {
+                if (this.participants.length === 0) return;
+                const player = this.participants[this.currentTurnIndex];
+                const nameEl = document.getElementById('currentPlayerName');
+                const avatarEl = document.getElementById('currentPlayerAvatar');
+                const roundEl = document.getElementById('roundCounter');
+
+                if (nameEl) nameEl.textContent = player.name;
+                if (avatarEl) avatarEl.textContent = player.name.charAt(0).toUpperCase();
+                if (roundEl) roundEl.textContent = this.round;
+            }
+
+            nextTurn() {
+                if (this.participants.length === 0) return;
+                this.currentTurnIndex = (this.currentTurnIndex + 1) % this.participants.length;
+                if (this.currentTurnIndex === 0) {
+                    this.round++;
+                }
+                this.saveState();
+                this.updateCurrentPlayerDisplay();
+                this.resetCardDisplay();
+            }
+
+            resetCardDisplay() {
+                document.getElementById('cardCategoryBar').style.backgroundColor = '#6366f1';
+                document.getElementById('cardCategoryBadge').className = 'bg-indigo-900/60 text-indigo-300 text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full flex items-center gap-1.5 border border-indigo-700';
+                document.getElementById('cardCategoryBadge').innerHTML = '<i class="fa-solid fa-sparkles"></i> Categoría';
+                document.getElementById('cardCounterBadge').textContent = 'Carta #--';
+                document.getElementById('questionTitle').textContent = '¡Gira la ruleta o selecciona una categoría para empezar!';
+                document.getElementById('awardBtn').disabled = true;
+                document.getElementById('anotherCardBtn').disabled = true;
+            }
+
+            initRouletteCanvas() {
+                const canvas = document.getElementById('rouletteCanvas');
+                if (!canvas) return;
+                this.drawRoulette(0);
+
+                canvas.addEventListener('click', () => {
+                    if (!this.isSpinning) {
+                        this.spinRoulette();
+                    }
+                });
+            }
+
+            drawRoulette(angleOffset) {
+                const canvas = document.getElementById('rouletteCanvas');
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                const categories = Object.keys(QUESTION_BANK);
+                const numSlices = categories.length;
+                const arc = (2 * Math.PI) / numSlices;
+                const radius = canvas.width / 2;
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.save();
+                ctx.translate(radius, radius);
+                ctx.rotate(angleOffset);
+
+                categories.forEach((cat, i) => {
+                    const startAngle = i * arc;
+                    const endAngle = (i + 1) * arc;
+
+                    ctx.beginPath();
+                    ctx.moveTo(0, 0);
+                    ctx.arc(0, 0, radius - 4, startAngle, endAngle);
+                    ctx.closePath();
+                    ctx.fillStyle = CATEGORY_COLORS[cat];
+                    ctx.fill();
+                    ctx.strokeStyle = '#ffffff';
+                    ctx.lineWidth = 3;
+                    ctx.stroke();
+
+                    ctx.save();
+                    ctx.rotate(startAngle + arc / 2);
+                    ctx.textAlign = 'right';
+                    ctx.fillStyle = '#ffffff';
+                    ctx.font = 'bold 12px Quicksand, sans-serif';
+                    ctx.shadowColor = 'rgba(0,0,0,0.5)';
+                    ctx.shadowBlur = 4;
+                    
+                    let shortName = cat;
+                    if (cat === "Máscaras y Mitos Sociales") shortName = "Máscaras";
+                    if (cat === "La Mente Detrás de la Fachada") shortName = "Mente";
+                    if (cat === "Secretos y Límites Reales") shortName = "Secretos";
+                    if (cat === "El Abismo Generacional") shortName = "Generaciones";
+                    if (cat === "La Vida Real Sin Filtros") shortName = "Sin Filtros";
+
+                    ctx.fillText(shortName, radius - 18, 5);
+                    ctx.restore();
+                });
+
+                ctx.restore();
+                ctx.beginPath();
+                ctx.arc(radius, radius, 22, 0, 2 * Math.PI);
+                ctx.fillStyle = '#1e293b';
+                ctx.fill();
+                ctx.lineWidth = 4;
+                ctx.strokeStyle = '#6366f1';
+                ctx.stroke();
+
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 12px Fredoka, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('V2', radius, radius);
+            }
+
+            spinRoulette() {
+                if (this.isSpinning) return;
+                this.soundFX.init();
+                this.isSpinning = true;
+                const spinBtn = document.getElementById('spinBtn');
+                if (spinBtn) spinBtn.disabled = true;
+
+                const categories = Object.keys(QUESTION_BANK);
+                const numSlices = categories.length;
+                const arcDeg = 360 / numSlices;
+
+                const randomSliceIndex = Math.floor(Math.random() * numSlices);
+                const extraSpins = 5 * 360;
+                const targetDegree = extraSpins + (360 - (randomSliceIndex * arcDeg + arcDeg / 2));
+                const targetRadians = (targetDegree * Math.PI) / 180;
+
+                let currentAngle = 0;
+                let startTime = null;
+                let lastSlicePassed = -1;
+                const duration = 3000;
+
+                const animateSpin = (timestamp) => {
+                    if (!startTime) startTime = timestamp;
+                    const elapsed = timestamp - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const easeProgress = 1 - Math.pow(1 - progress, 3);
+                    currentAngle = easeProgress * targetRadians;
+
+                    const currentDegrees = (currentAngle * 180 / Math.PI) % 360;
+                    const currentSlice = Math.floor(currentDegrees / arcDeg);
+                    if (currentSlice !== lastSlicePassed) {
+                        this.soundFX.playTick();
+                        lastSlicePassed = currentSlice;
+                    }
+
+                    this.drawRoulette(currentAngle);
+
+                    if (progress < 1) {
+                        requestAnimationFrame(animateSpin);
+                    } else {
+                        this.isSpinning = false;
+                        if (spinBtn) spinBtn.disabled = false;
+                        const selectedCategory = categories[randomSliceIndex];
+                        this.selectCategory(selectedCategory);
+                    }
+                };
+
+                requestAnimationFrame(animateSpin);
+            }
+
+            selectCategoryManual(categoryName) {
+                if (this.isSpinning) return;
+                this.drawRoulette(Math.random() * Math.PI * 2);
+                this.selectCategory(categoryName);
+            }
+
+            selectCategory(categoryName) {
+                this.currentCategory = categoryName;
+                const questions = QUESTION_BANK[categoryName];
+                const randomIndex = Math.floor(Math.random() * questions.length);
+                this.currentQuestionIndex = randomIndex;
+                const questionText = questions[randomIndex];
+
+                const colorHex = CATEGORY_COLORS[categoryName];
+                document.getElementById('cardCategoryBar').style.backgroundColor = colorHex;
+                
+                const badge = document.getElementById('cardCategoryBadge');
+                badge.className = 'text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full flex items-center gap-1.5 text-white shadow-sm';
+                badge.style.backgroundColor = colorHex;
+                badge.innerHTML = `<i class="fa-solid fa-tag"></i> ${categoryName}`;
+
+                document.getElementById('cardCounterBadge').textContent = `Carta #${randomIndex + 1} de ${questions.length}`;
+                document.getElementById('questionTitle').textContent = questionText;
+
+                document.getElementById('awardBtn').disabled = false;
+                document.getElementById('anotherCardBtn').disabled = false;
+
+                this.soundFX.playFanfare();
+
+                confetti({
+                    particleCount: 45,
+                    spread: 65,
+                    origin: { y: 0.6 }
+                });
+            }
+
+            drawCardForCategory() {
+                if (!this.currentCategory) return;
+                this.selectCategory(this.currentCategory);
+            }
+
+            awardPoints(points) {
+                if (this.participants.length === 0) return;
+                const player = this.participants[this.currentTurnIndex];
+                player.score += points;
+                this.saveState();
+
+                this.soundFX.playScorePoint();
+
+                confetti({
+                    particleCount: 80,
+                    spread: 70,
+                    origin: { y: 0.5 }
+                });
+
+                this.showModal('¡Punto Otorgado!', `¡Excelente participación de <strong>${player.name}</strong>! Se le sumó +${points} punto.`, 'fa-star text-yellow-300');
+                this.nextTurn();
+            }
+
+            openPunishmentModal() {
+                const modal = document.getElementById('punishmentModal');
+                document.getElementById('punishmentResultText').textContent = '¡Pulsa el botón para sortear el castigo!';
+                modal.classList.remove('hidden');
+            }
+
+            closePunishmentModal() {
+                document.getElementById('punishmentModal').classList.add('hidden');
+            }
+
+            spinPunishmentWheel() {
+                const resultEl = document.getElementById('punishmentResultText');
+                const btn = document.getElementById('spinPunishmentBtn');
+                btn.disabled = true;
+
+                let count = 0;
+                const interval = setInterval(() => {
+                    const randomPunishment = PUNISHMENT_LIST[Math.floor(Math.random() * PUNISHMENT_LIST.length)];
+                    resultEl.textContent = randomPunishment;
+                    count++;
+                    if (count > 12) {
+                        clearInterval(interval);
+                        btn.disabled = false;
+                        this.soundFX.playFanfare();
+                        confetti({ particleCount: 30, spread: 50 });
+                    }
+                }, 80);
+            }
+
+            useRoleReversal() {
+                const player = this.participants[this.currentTurnIndex] || { name: 'Participante' };
+                this.showModal('🔄 Inversión de Roles (Cambio de Lado)', `<strong>${player.name}</strong> activa el comodín: ahora tú tienes el poder de hacerle una pregunta incómoda o divertida a cualquiera de los adultos de la mesa sobre su propia adolescencia.`, 'fa-wand-magic-sparkles text-cyan-400');
+            }
+
+            triggerSecretVote() {
+                this.showModal('🗳️ Voto Secreto Grupal', `Momento de conectar: Todos en la mesa escriben en un papelito o votan en secreto a la cuenta de 3 sobre una situación cotidiana para descubrir que a todos nos pasa lo mismo.`, 'fa-envelope-open-text text-purple-400');
+            }
+
+            renderRankingList() {
+                const rankingEl = document.getElementById('rankingList');
+                if (!rankingEl) return;
+
+                if (this.participants.length === 0) {
+                    rankingEl.innerHTML = `
+                        <div class="text-center py-8 bg-slate-900/40 rounded-2xl border border-dashed border-slate-700">
+                            <i class="fa-solid fa-trophy text-3xl text-slate-500 mb-2"></i>
+                            <p class="text-slate-400 text-sm">No hay participantes registrados todavía.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const sorted = [...this.participants].sort((a, b) => b.score - a.score);
+
+                rankingEl.innerHTML = sorted.map((p, idx) => {
+                    let badgeColor = 'bg-slate-900 text-slate-200';
+                    let iconHTML = `<span class="font-bold kids-font">#${idx + 1}</span>`;
+                    if (idx === 0) {
+                        badgeColor = 'bg-yellow-900/60 text-yellow-300 border border-yellow-700';
+                        iconHTML = `<i class="fa-solid fa-crown text-yellow-400"></i>`;
+                    } else if (idx === 1) {
+                        badgeColor = 'bg-slate-700 text-slate-200';
+                        iconHTML = `<i class="fa-solid fa-medal text-slate-400"></i>`;
+                    } else if (idx === 2) {
+                        badgeColor = 'bg-amber-900/60 text-amber-300';
+                        iconHTML = `<i class="fa-solid fa-medal text-amber-500"></i>`;
+                    }
+
+                    return `
+                        <div class="flex items-center justify-between p-4 bg-slate-900/50 hover:bg-slate-900/80 rounded-2xl border border-slate-700 transition">
+                            <div class="flex items-center gap-3.5">
+                                <div class="w-10 h-10 rounded-2xl ${badgeColor} flex items-center justify-center text-lg shadow-sm">
+                                    ${iconHTML}
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-slate-100 text-base">${this.escapeHTML(p.name)}</h4>
+                                    <span class="text-xs text-slate-400">Participante activo V2</span>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <span class="kids-font text-2xl font-bold text-indigo-400">${p.score}</span>
+                                <span class="text-xs text-slate-400 block">puntos</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            showModal(title, message, iconClass = 'fa-circle-check') {
+                const modal = document.getElementById('customModal');
+                const modalBox = document.getElementById('modalBox');
+                document.getElementById('modalTitle').textContent = title;
+                document.getElementById('modalMessage').innerHTML = message;
+                document.getElementById('modalIcon').className = `fa-solid ${iconClass}`;
+
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    modalBox.classList.remove('scale-95', 'opacity-0');
+                    modalBox.classList.add('scale-100', 'opacity-100');
+                }, 10);
+            }
+
+            closeModal() {
+                const modal = document.getElementById('customModal');
+                const modalBox = document.getElementById('modalBox');
+                modalBox.classList.remove('scale-100', 'opacity-100');
+                modalBox.classList.add('scale-95', 'opacity-0');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                }, 200);
+            }
+
+            saveState() {
+                localStorage.setItem('reality_v2_participants', JSON.stringify(this.participants));
+                localStorage.setItem('reality_v2_round', this.round.toString());
+            }
+
+            escapeHTML(str) {
+                return str.replace(/[&<>'"]/g, 
+                    tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+                );
+            }
+        }
+
+        // Initialize App globally on window load
+        window.onload = function() {
+            window.app = new RealityGameV2App();
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descubriendo Emociones En Palabras</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Quicksand', sans-serif; }
+        h1, h2, h3, .font-fun { font-family: 'Fredoka', sans-serif; }
+        .tab-active { border-bottom: 4px solid #6366f1; color: #4338ca; background-color: #e0e7ff; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 min-h-screen text-slate-800 flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-white/80 backdrop-blur-md shadow-sm border-b border-indigo-100 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="bg-indigo-600 text-white p-2 rounded-2xl shadow-md text-2xl font-fun">🎲</div>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold font-fun text-indigo-900">Descubriendo Emociones</h1>
+                    <p class="text-xs text-indigo-600 font-medium">Juego Didáctico con Ruleta y 150 Preguntas</p>
+                </div>
+            </div>
+            <nav class="flex space-x-1 md:space-x-2 mt-2 md:mt-0 overflow-x-auto">
+                <button onclick="window.app.switchTab('setup')" id="tab-setup" class="px-4 py-2 rounded-xl text-sm font-bold transition flex items-center space-x-1 tab-active"><span>👥</span><span>Jugadores</span></button>
+                <button onclick="window.app.switchTab('game')" id="tab-game" class="px-4 py-2 rounded-xl text-sm font-bold transition flex items-center space-x-1 text-slate-600 hover:bg-indigo-50"><span>🎮</span><span>Tablero & Ruleta</span></button>
+                <button onclick="window.app.switchTab('rules')" id="tab-rules" class="px-4 py-2 rounded-xl text-sm font-bold transition flex items-center space-x-1 text-slate-600 hover:bg-indigo-50"><span>📖</span><span>Reglamento</span></button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-6xl mx-auto px-4 py-6 flex-grow w-full">
+
+        <!-- SETUP TAB -->
+        <section id="view-setup" class="space-y-6">
+            <div class="bg-white rounded-3xl p-6 md:p-8 shadow-xl border border-indigo-100 max-w-2xl mx-auto">
+                <div class="text-center space-y-2 mb-6">
+                    <span class="bg-indigo-100 text-indigo-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Paso 1</span>
+                    <h2 class="text-2xl md:text-3xl font-bold font-fun text-slate-900">Configura la Partida</h2>
+                    <p class="text-sm text-slate-500">Agrega a los participantes (niños, jóvenes o adultos) para llevar el marcador y la ruleta interactiva.</p>
+                </div>
+
+                <div class="flex gap-2 mb-4">
+                    <input type="text" id="player-input" placeholder="Nombre del participante..." class="flex-grow px-4 py-3 rounded-2xl border-2 border-slate-200 focus:border-indigo-500 focus:outline-none transition font-medium text-base" onkeypress="if(event.key==='Enter') window.app.addPlayer()">
+                    <button onclick="window.app.addPlayer()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-6 py-3 rounded-2xl shadow-lg shadow-indigo-200 transition flex items-center space-x-1"><span>Agregar</span></button>
+                </div>
+
+                <div id="player-list" class="space-y-2 mb-6 max-h-48 overflow-y-auto pr-1">
+                    <!-- Populated dynamically -->
+                </div>
+
+                <div class="border-t border-slate-100 pt-6 space-y-4">
+                    <h3 class="font-bold text-sm text-slate-700 uppercase tracking-wide">Selecciona el Modo de Juego:</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <label class="flex items-start space-x-3 p-3 rounded-2xl border-2 border-indigo-500 bg-indigo-50/50 cursor-pointer transition">
+                            <input type="radio" name="game-mode" value="classic" checked class="mt-1 text-indigo-600 focus:ring-indigo-500">
+                            <div>
+                                <span class="block font-bold text-slate-900 text-sm">Clásico con Ruleta</span>
+                                <span class="block text-xs text-slate-500">Gira la ruleta y responde según la categoría tocada.</span>
+                            </div>
+                        </label>
+                        <label class="flex items-start space-x-3 p-3 rounded-2xl border-2 border-slate-200 hover:border-indigo-300 cursor-pointer transition">
+                            <input type="radio" name="game-mode" value="coop" class="mt-1 text-indigo-600 focus:ring-indigo-500">
+                            <div>
+                                <span class="block font-bold text-slate-900 text-sm">Cooperativo / Misiones</span>
+                                <span class="block text-xs text-slate-500">Retos grupales y misiones en equipo.</span>
+                            </div>
+                        </label>
+                        <label class="flex items-start space-x-3 p-3 rounded-2xl border-2 border-slate-200 hover:border-indigo-300 cursor-pointer transition">
+                            <input type="radio" name="game-mode" value="night" class="mt-1 text-indigo-600 focus:ring-indigo-500">
+                            <div>
+                                <span class="block font-bold text-slate-900 text-sm">Rutina Nocturna</span>
+                                <span class="block text-xs text-slate-500">Preguntas reflexivas y de calma antes de dormir.</span>
+                            </div>
+                        </label>
+                        <label class="flex items-start space-x-3 p-3 rounded-2xl border-2 border-slate-200 hover:border-indigo-300 cursor-pointer transition">
+                            <input type="radio" name="game-mode" value="timer" class="mt-1 text-indigo-600 focus:ring-indigo-500">
+                            <div>
+                                <span class="block font-bold text-slate-900 text-sm">Contrarreloj</span>
+                                <span class="block text-xs text-slate-500">Responde antes de que termine el temporizador.</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <button id="start-btn" onclick="window.app.startGame()" disabled class="w-full py-4 rounded-2xl font-bold text-white bg-slate-300 cursor-not-allowed shadow-none transition text-lg flex justify-center items-center space-x-2">
+                        <span>¡Comenzar Partida!</span>
+                        <span>🚀</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- GAME TAB -->
+        <section id="view-game" class="hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                
+                <!-- Left Column: Players & Scoreboard -->
+                <div class="bg-white rounded-3xl p-5 shadow-xl border border-indigo-100 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-lg font-fun text-slate-900">Participantes</h3>
+                            <span id="current-mode-badge" class="bg-indigo-100 text-indigo-700 text-xs font-bold px-2.5 py-1 rounded-full">Clásico</span>
+                        </div>
+                        <div id="scoreboard-list" class="space-y-3 mb-4">
+                            <!-- Scoreboard items -->
+                        </div>
+                    </div>
+                    <div class="pt-4 border-t border-slate-100 flex gap-2">
+                        <button onclick="window.app.resetGame()" class="flex-1 py-2 text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl transition">Reiniciar Partida</button>
+                        <button onclick="window.app.switchTab('setup')" class="flex-1 py-2 text-xs font-bold bg-indigo-50 hover:bg-indigo-100 text-indigo-600 rounded-xl transition">Editar Jugadores</button>
+                    </div>
+                </div>
+
+                <!-- Center & Right Column: Roulette & Card Modal -->
+                <div class="lg:col-span-2 space-y-6">
+                    
+                    <!-- Roulette Card Box -->
+                    <div class="bg-white rounded-3xl p-6 shadow-xl border border-indigo-100 flex flex-col items-center text-center relative overflow-hidden">
+                        <div class="absolute top-4 left-4">
+                            <span id="turn-indicator" class="bg-purple-100 text-purple-700 text-xs font-bold px-3 py-1 rounded-full">Turno de: -</span>
+                        </div>
+                        <div class="absolute top-4 right-4" id="timer-display" style="display:none;">
+                            <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full animate-pulse">⏱️ <span id="timer-count">30</span>s</span>
+                        </div>
+
+                        <div class="my-6 relative flex flex-col items-center">
+                            <canvas id="roulette-canvas" width="280" height="280" class="drop-shadow-lg cursor-pointer" onclick="window.app.spinRoulette()"></canvas>
+                            <div class="absolute top-0 w-4 h-6 bg-rose-600 clip-polygon shadow-md" style="clip-path: polygon(50% 100%, 0 0, 100% 0);"></div>
+                        </div>
+
+                        <button onclick="window.app.spinRoulette()" id="spin-btn" class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold px-8 py-3 rounded-2xl shadow-lg shadow-indigo-200 transition text-lg font-fun flex items-center space-x-2">
+                            <span>🎰 ¡Girar Ruleta!</span>
+                        </button>
+                    </div>
+
+                    <!-- Question Card Display -->
+                    <div id="card-container" class="hidden bg-gradient-to-br from-indigo-900 to-purple-900 text-white rounded-3xl p-6 md:p-8 shadow-2xl relative overflow-hidden">
+                        <div class="absolute top-0 right-0 transform translate-x-4 -translate-y-4 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+                        <div class="flex justify-between items-center mb-4">
+                            <span id="card-category-tag" class="bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider backdrop-blur-sm">Categoría</span>
+                            <span class="text-xs text-indigo-200 font-medium">Carta Educativa</span>
+                        </div>
+                        <h3 id="card-question-text" class="text-xl md:text-2xl font-bold font-fun mb-6 leading-relaxed">¿Pregunta del juego?</h3>
+                        <div class="flex flex-wrap gap-3 justify-end">
+                            <button onclick="window.app.awardPoint()" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-xl shadow-lg transition flex items-center space-x-1 text-sm"><span>⭐️ Sumar Punto & Siguiente</span></button>
+                            <button onclick="window.app.nextTurnOnly()" class="bg-white/20 hover:bg-white/30 text-white font-bold px-5 py-2.5 rounded-xl transition text-sm">Siguiente Turno</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- RULES TAB -->
+        <section id="view-rules" class="hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 md:p-8 shadow-xl border border-indigo-100 max-w-4xl mx-auto space-y-6">
+                <div class="border-b border-slate-100 pb-4">
+                    <h2 class="text-2xl md:text-3xl font-bold font-fun text-slate-900">Reglamento Oficial y Modos de Juego</h2>
+                    <p class="text-sm text-slate-500">Descubre cómo aprovechar al máximo las 150 preguntas y la dinámica grupal.</p>
+                </div>
+
+                <div class="space-y-4 text-slate-700 text-sm md:text-base leading-relaxed">
+                    <h3 class="font-bold text-indigo-900 text-lg font-fun">Principio de Bidireccionalidad (Regla de Oro)</h3>
+                    <p>Tanto niños/as como adultos participan por igual. Cuando se extrae una pregunta, todos los participantes responden o aportan su perspectiva, fomentando un espacio sin juicios ni correcciones, basado en la escucha activa y la empatía.</p>
+
+                    <h3 class="font-bold text-indigo-900 text-lg font-fun">Modos de Juego Incluidos</h3>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li><strong>Clásico con Ruleta:</strong> Gira la ruleta virtual o física para que el azar decida la categoría de la pregunta.</li>
+                        <li><strong>Cooperativo / Misiones:</strong> Ideal para cartas de Misiones Especiales, donde todo el grupo colabora en conjunto para superar consignas corporales o de expresión.</li>
+                        <li><strong>Rutina Nocturna:</strong> Diseñado para momentos antes de dormir, extrayendo preguntas de calma, bienestar y reflexión sobre el día.</li>
+                        <li><strong>Contrarreloj:</strong> Pon a prueba la agilidad mental respondiendo antes de que se agote el temporizador de 30 segundos.</li>
+                    </ul>
+
+                    <h3 class="font-bold text-indigo-900 text-lg font-fun">Categorías de las 150 Preguntas</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                        <div class="p-4 rounded-2xl bg-indigo-50 border border-indigo-100">
+                            <h4 class="font-bold text-indigo-900">💖 Relaciones Mágicas</h4>
+                            <p class="text-xs text-slate-600 mt-1">Vínculos familiares, amigos, afectos y convivencia cotidiana.</p>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-purple-50 border border-purple-100">
+                            <h4 class="font-bold text-purple-900">🌍 Mi Mundo</h4>
+                            <p class="text-xs text-slate-600 mt-1">Percepción del entorno, escuela, sueños y visión personal.</p>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-pink-50 border border-pink-100">
+                            <h4 class="font-bold text-pink-900">🌊 Mar de Emociones</h4>
+                            <p class="text-xs text-slate-600 mt-1">Autoconocimiento, gestión de emociones, miedos y alegrías.</p>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-amber-50 border border-amber-100">
+                            <h4 class="font-bold text-amber-900">🎁 Caja de Sorpresas</h4>
+                            <p class="text-xs text-slate-600 mt-1">Curiosidades, dilemas divertidos y reflexiones inesperadas.</p>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-100 sm:col-span-2">
+                            <h4 class="font-bold text-emerald-900">⭐ Misiones Especiales</h4>
+                            <p class="text-xs text-slate-600 mt-1">Dinámicas en acción, mímica, postura, gratitud y juegos breves.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-6 text-xs text-slate-400 font-medium">
+        Descubriendo Emociones En Palabras &bull; Edición Interactiva con 150 Preguntas y Ruleta
+    </footer>
+
+    <!-- App Logic Script -->
+    <script>
+        const categories = [
+            { id: 'relaciones', name: 'Relaciones Mágicas', color: '#6366f1', icon: '💖', questions: [
+                "¿Quién es esa persona que siempre logra sacarte una sonrisa cuando estás triste?",
+                "¿Qué es lo que más te gusta hacer en familia durante los fines de semana?",
+                "Si pudieras regalarle un superpoder a tu mejor amigo/a, ¿cuál le darías y por qué?",
+                "¿Qué abrazo recuerdas como el más reconfortante que hayas recibido?",
+                "¿Hay alguna regla de casa que te gustaría cambiar o negociar?",
+                "¿Qué cualidad admiras profundamente de la persona que se sienta a tu lado?",
+                "¿Cómo te das cuenta de que alguien en tu familia necesita un gesto de cariño?",
+                "¿Qué actividad comparten en la que sientas que el tiempo pasa muy rápido?",
+                "¿Cuál ha sido el momento más divertido que recuerdes junto a tus amigos/as?",
+                "Si tu familia fuera una banda de música o equipo de superhéroes, ¿qué rol tendría cada uno?",
+                "¿Qué palabra usas con más frecuencia para demostrar amor a tus seres queridos?",
+                "¿Cómo te gusta que te consuelen cuando sientes enfado o tristeza?",
+                "¿Qué es algo que aprendiste de tus abuelos o adultos mayores que nunca olvidarás?",
+                "¿Qué detalle o pequeño gesto tuyo hace sonreír a los demás?",
+                "¿A quién acudirías si tuvieras un secreto muy importante y necesitaras consejo?",
+                "¿Qué tradición o costumbre familiar es tu favorita?",
+                "¿Cómo reaccionas cuando un amigo/a piensa de forma muy diferente a la tuya?",
+                "¿Qué es lo más valioso que puede ofrecer una persona en una amistad?",
+                "¿Qué lugar de la casa sientes que es el más cálido y acogedor para reunirse?",
+                "¿Qué palabra te gustaría escuchar más seguido por parte de tus seres queridos?",
+                "¿Qué apodo cariñoso te gusta que te digan y quién te lo puso?",
+                "¿Cómo celebras los logros de las personas que te rodean?",
+                "¿Qué te hace sentir más orgulloso/a de tu grupo de amigos?",
+                "¿Qué consejo le darías a alguien que se siente solo en el recreo o trabajo?",
+                "¿Qué palabra define mejor la armonía dentro de tu hogar?",
+                "¿Cuál es el regalo más significativo que has hecho o recibido?",
+                "¿Cómo demuestras agradecimiento cuando alguien te ayuda sin que se lo pidas?",
+                "¿Qué actividad familiar te gustaría que se repita más seguido?",
+                "¿Qué te enseñó una discusión que tuviste con alguien querido en el pasado?",
+                "¿Qué significa para ti ser un buen compañero o compañera?"
+            ]},
+            { id: 'mundo', name: 'Mi Mundo', color: '#a855f7', icon: '🌍', questions: [
+                "Si pudieras inventar una asignatura o materia para la escuela, ¿cuál sería?",
+                "¿Qué paisaje o lugar que viste alguna vez te transmitió una paz absoluta?",
+                "Si pudieras viajar en el tiempo por un día, ¿irías al pasado o al futuro?",
+                "¿Qué objeto pequeño de tu habitación tiene un significado especial para ti?",
+                "¿Qué causa social o de la naturaleza te gustaría ayudar a proteger?",
+                "Si tuvieras la oportunidad de construir una casa en un árbol, ¿cómo la diseñarías?",
+                "¿Qué sonido de la naturaleza te resulta más relajante y agradable?",
+                "¿Qué es lo más curioso que has descubierto sobre el mundo en el último tiempo?",
+                "Si fueras un animal durante un día entero, ¿cuál elegirías ser y qué harías?",
+                "¿Qué comida o aroma te transporta inmediatamente a un recuerdo feliz de la infancia?",
+                "¿Qué superpoder te ayudaría a resolver los problemas de tu entorno escolar o laboral?",
+                "¿Qué invento de la humanidad consideras que ha sido el más útil de todos?",
+                "¿Qué espacio de tu rutina diaria disfrutas contemplar en silencio?",
+                "Si fueras el/la creador/a de un planeta nuevo, ¿cuál sería su regla principal?",
+                "¿Qué talento o habilidad te gustaría aprender si tuvieras tiempo ilimitado?",
+                "¿Cómo imaginas un día perfecto desde que te levantas hasta que te acostás?",
+                "¿Qué misterio del universo te genera mucha curiosidad por resolver?",
+                "Si pudieras hablar con los animales, ¿a cuál le harías la primera pregunta?",
+                "¿Qué es lo que más te enorgullece del lugar donde vives?",
+                "¿Qué elemento de la tecnología actual te gustaría desconectar por un tiempo?",
+                "Si pudieras diseñar tu propia ciudad ideal, ¿qué edificio nunca faltaría?",
+                "¿Qué libro, película o historia te marcó profundamente en tu forma de ver la vida?",
+                "¿Qué actividad artística te permite desconectar y expresar lo que sientes?",
+                "Si tuvieras un programa de radio propio, ¿de qué temas hablarías?",
+                "¿Qué estación del año disfrutas más y por qué razón?",
+                "Si pudieras cambiar una ley del mundo actual, ¿cuál cambiarías?",
+                "¿Qué monumento histórico o maravilla del mundo te gustaría visitar en persona?",
+                "¿Qué mensaje dejarías escrito en una cápsula del tiempo para dentro de 50 años?",
+                "¿Qué valor consideras indispensable para que la sociedad funcione mejor?",
+                "Si tu vida fuera un mapa de descubrimientos, ¿cuál es tu próximo gran destino?"
+            ]},
+            { id: 'emociones', name: 'Mar de Emociones', color: '#ec4899', icon: '🌊', questions: [
+                "¿En qué parte de tu cuerpo sientes la frustración cuando algo no sale como esperabas?",
+                "¿Qué actividad o música te ayuda a calmar la mente cuando sientes enojo?",
+                "¿Cuál es el miedo más grande que has logrado superar hasta hoy?",
+                "¿Cómo describirías el color y la forma de la felicidad si fueras a dibujarla?",
+                "¿Qué te hace sentir seguro/a cuando experimentas incertidumbre o cambios?",
+                "¿Qué pensamiento te ayuda a levantarte con energía por las mañanas?",
+                "¿Cuándo fue la última vez que sentiste orgullo por ti mismo/a y por qué motivo?",
+                "¿Qué emoción te resulta más difícil de expresar en palabras frente a los demás?",
+                "¿Qué pequeño logro personal de esta semana merece ser celebrado?",
+                "¿Qué haces para recargar energías cuando te sientes agotado/a emocionalmente?",
+                "¿Qué persona te ayuda a mantener la calma durante los momentos difíciles?",
+                "¿Qué pensamiento positivo te repites cuando sientes vergüenza o timidez?",
+                "¿Cómo reaccionas cuando cometes un error importante? ¿Te perdonas con facilidad?",
+                "¿Qué objeto o amuleto te transmite tranquilidad tener cerca?",
+                "¿Qué sentimiento te invade cuando ves a otra persona lograr algo muy deseado?",
+                "¿Qué olor o sabor te provoca una sensación instantánea de alegría?",
+                "¿En qué momentos del día sientes que puedes ser 100% tú mismo/a sin filtros?",
+                "¿Qué aprendizaje valioso te ha dejado un momento de tristeza en el pasado?",
+                "¿Qué palabra o frase reconfortante te gustaría recordar en momentos de estrés?",
+                "¿Cómo distingues cuando estás cansado/a físicamente de cuando lo estás mentalmente?",
+                "¿Qué haces cuando sientes que la paciencia se te agota por completo?",
+                "¿Cómo expresas gratitud hacia las personas que te apoyan en silencio?",
+                "¿Qué situación reciente te sacó una sonrisa inesperada en un día gris?",
+                "¿Qué significa para ti tener valentía ante un obstáculo difícil?",
+                "¿Cómo te preparas mentalmente antes de afrontar un gran desafío?",
+                "¿Qué emoción predominó en tu día de ayer y por qué?",
+                "¿Qué consejo te darías a ti mismo/a cuando te sientes abrumado/a?",
+                "¿Cómo celebras tus pequeñas victorias cotidianas?",
+                "¿Qué te ayuda a soltar la culpa cuando las cosas no salen como planeabas?",
+                "¿Qué palabra describe tu estado de ánimo actual y por qué?"
+            ]},
+            { id: 'sorpresas', name: 'Caja de Sorpresas', color: '#f59e0b', icon: '🎁', questions: [
+                "Si tuvieras un robot personal durante una semana, ¿cuál sería su tarea principal?",
+                "¿Preferirías tener la capacidad de volar muy alto o de ser invisible cuando quieras?",
+                "Si pudieras cenar con cualquier personaje de ficción o historia, ¿a quién elegirías?",
+                "¿Qué objeto cotidiano consideras que tendría un uso gracioso si fuera gigante?",
+                "Si pudieras cambiar el color del cielo por un día, ¿qué tono elegirías?",
+                "¿Cuál es la prenda de vestir más rara o divertida que has usado en tu vida?",
+                "Si tuvieras que ponerle un título de película a tu vida actual, ¿cuál sería?",
+                "¿Qué canción te resulta imposible escuchar sin empezar a mover los pies?",
+                "Si pudieras vivir dentro de un juego de mesa o videojuego, ¿cuál escogerías?",
+                "¿Qué alimento comerías todos los días sin cansarte jamás?",
+                "Si tu mascota o planta hablara, ¿cuál crees que sería su frase más recurrente?",
+                "¿Qué poder absurdo o divertido te gustaría tener (ej. que las verduras sepan a chocolate)?",
+                "Si encontraras una lámpara mágica con 3 deseos, ¿cuál sería el primero?",
+                "¿Qué juguete de la infancia guardas o recordarás con más cariño?",
+                "Si pudieras comunicarte a través de un idioma inventado, ¿cómo sonaría?",
+                "¿Qué experiencia divertida te gustaría repetir una y otra vez?",
+                "Si pudieras cambiar de profesión o actividad por 24 horas, ¿qué serías?",
+                "¿Qué lugar extraño te gustaría explorar si supieras que nada malo va a pasar?",
+                "Si crearas una fiesta o festividad nacional nueva, ¿qué se celebraría en ella?",
+                "¿Qué palabra te parece la más divertida de pronunciar en voz alta?",
+                "Si pudieras tener cualquier animal exótico como vecino inofensivo, ¿cuál elegirías?",
+                "¿Qué sabor de helado loco e imposible te gustaría inventar?",
+                "Si los objetos pudieran hablar por cinco minutos en tu casa, ¿cuál se quejaría primero?",
+                "¿Qué superpoder inútil pero gracioso te gustaría poseer?",
+                "Si tuvieras que cambiar tu nombre por el de una fruta o flor, ¿cuál elegirías?",
+                "¿Qué invención absurda te gustaría patrocinar en un concurso de inventos?",
+                "Si pudieras teletransportarte por un segundo, ¿a qué lugar del mundo irías ahora mismo?",
+                "¿Qué disfraz usarías si tuvieras que ir a una fiesta temática en este instante?",
+                "Si pudieras añadir un efecto de sonido a tus pasos al caminar, ¿cómo sonaría?",
+                "¿Qué chiste o anécdota graciosa nunca te cansas de contar?"
+            ]},
+            { id: 'misiones', name: 'Misiones Especiales', color: '#10b981', icon: '⭐', questions: [
+                "Haz una representación con mímica de tu emoción favorita para que los demás la adivinen.",
+                "Di tres cualidades positivas de la persona a tu derecha mirándola a los ojos.",
+                "Inventa un saludo secreto de 3 pasos y enséñaselo a todo el grupo.",
+                "Realiza 5 respiraciones profundas junto al grupo contando hasta 4 en cada inhalación.",
+                "Dibuja en el aire una figura que represente la calma para ti.",
+                "Busca un objeto en el espacio donde están que tenga tu color favorito y explica por qué.",
+                "Canta el estribillo de una canción que te ponga de buen humor.",
+                "Posa durante 10 segundos representando una estatua de la alegría.",
+                "Cuenta un chiste breve o haz una cara graciosa para sacar una carcajada general.",
+                "Haz un cumplido sincero a cada uno de los integrantes de la mesa.",
+                "Imita el sonido de un animal que represente cómo te sientes hoy.",
+                "Regala un choque de manos o abrazo de oso al participante de tu izquierda.",
+                "Mantén la mirada con otro jugador durante 15 segundos sin reírte.",
+                "Nombra 3 cosas por las que te sientas profundamente agradecido/a el día de hoy.",
+                "Realiza un baile improvisado de 10 segundos como si estuvieras celebrando un gol.",
+                "Inventa una frase de ánimo para el grupo y dila con voz de locutor de radio.",
+                "Muestra tu mejor postura de superhéroe o superheroína durante 5 segundos.",
+                "Di una palabra difícil al revés o intenta decir un trabalenguas rápido.",
+                "Haz un gesto de aplauso grupal donde todos aplaudan con el mismo ritmo.",
+                "Cierra los ojos por 10 segundos y piensa en tu recuerdo más feliz del año.",
+                "Haz un estiramiento de brazos guiando al resto del grupo por 10 segundos.",
+                "Dibuja una sonrisa grande con tus dedos en el aire y mándala al grupo.",
+                "Imita el andar de un robot durante 5 pasos y regresa a tu lugar.",
+                "Di 'Te quiero' o 'Gracias' en tres idiomas diferentes.",
+                "Haz una reverencia de agradecimiento teatral al jugador frente a ti.",
+                "Tararea una melodía alegre y deja que los demás adivinen cuál es.",
+                "Menciona un talento oculto que tengas y demuéstralo en 5 segundos.",
+                "Haz un gesto de victoria con ambas manos y celebra con energía.",
+                "Dale un aplauso de 5 segundos al jugador que estuvo antes que tú.",
+                "Adopta una postura de máxima relajación y respira hondo con una sonrisa."
+            ]}
+        ];
+
+        class EmotionalGameApp {
+            constructor() {
+                this.players = JSON.parse(localStorage.getItem('emotion_players')) || [];
+                this.scores = JSON.parse(localStorage.getItem('emotion_scores')) || {};
+                this.currentTurnIndex = 0;
+                this.isSpinning = false;
+                this.timerInterval = null;
+                this.timeLeft = 30;
+                
+                this.initUI();
+            }
+
+            initUI() {
+                this.renderPlayers();
+                this.updateStartButton();
+                this.drawRoulette(0);
+            }
+
+            switchTab(tabId) {
+                ['setup', 'game', 'rules'].forEach(id => {
+                    document.getElementById(`view-${id}`).classList.add('hidden');
+                    document.getElementById(`tab-${id}`).classList.remove('tab-active');
+                    document.getElementById(`tab-${id}`).classList.add('text-slate-600', 'hover:bg-indigo-50');
+                });
+                document.getElementById(`view-${tabId}`).classList.remove('hidden');
+                document.getElementById(`tab-${tabId}`).classList.add('tab-active');
+                document.getElementById(`tab-${tabId}`).classList.remove('text-slate-600', 'hover:bg-indigo-50');
+
+                if (tabId === 'game') {
+                    setTimeout(() => this.drawRoulette(0), 50);
+                }
+            }
+
+            addPlayer() {
+                const input = document.getElementById('player-input');
+                const name = input.value.trim();
+                if (!name) return;
+                if (this.players.includes(name)) {
+                    alert('Este participante ya fue agregado.');
+                    return;
+                }
+                this.players.push(name);
+                if (this.scores[name] === undefined) this.scores[name] = 0;
+                input.value = '';
+                this.saveState();
+                this.renderPlayers();
+                this.updateStartButton();
+            }
+
+            removePlayer(name) {
+                this.players = this.players.filter(p => p !== name);
+                delete this.scores[name];
+                this.saveState();
+                this.renderPlayers();
+                this.updateStartButton();
+            }
+
+            renderPlayers() {
+                const list = document.getElementById('player-list');
+                if (this.players.length === 0) {
+                    list.innerHTML = `<p class="text-xs text-slate-400 text-center py-4 bg-slate-50 rounded-2xl border border-dashed border-slate-200">No hay participantes agregados todavía.</p>`;
+                    return;
+                }
+                list.innerHTML = this.players.map(p => `
+                    <div class="flex justify-between items-center bg-indigo-50/60 px-4 py-2.5 rounded-2xl border border-indigo-100">
+                        <span class="font-bold text-slate-700 text-sm">👤 ${p}</span>
+                        <button onclick="window.app.removePlayer('${p}')" class="text-rose-500 hover:text-rose-700 text-xs font-bold px-2 py-1">Eliminar</button>
+                    </div>
+                `).join('');
+            }
+
+            updateStartButton() {
+                const btn = document.getElementById('start-btn');
+                if (this.players.length > 0) {
+                    btn.disabled = false;
+                    btn.classList.remove('bg-slate-300', 'cursor-not-allowed');
+                    btn.classList.add('bg-indigo-600', 'hover:bg-indigo-700', 'shadow-lg', 'shadow-indigo-200');
+                } else {
+                    btn.disabled = true;
+                    btn.classList.add('bg-slate-300', 'cursor-not-allowed');
+                    btn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700', 'shadow-lg', 'shadow-indigo-200');
+                }
+            }
+
+            saveState() {
+                localStorage.setItem('emotion_players', JSON.stringify(this.players));
+                localStorage.setItem('emotion_scores', JSON.stringify(this.scores));
+            }
+
+            startGame() {
+                if (this.players.length === 0) return;
+                this.currentTurnIndex = 0;
+                const mode = document.querySelector('input[name="game-mode"]:checked').value;
+                const modeNames = { classic: 'Clásico', coop: 'Cooperativo', night: 'Rutina Nocturna', timer: 'Contrarreloj' };
+                document.getElementById('current-mode-badge').innerText = modeNames[mode];
+                
+                this.switchTab('game');
+                this.updateScoreboard();
+                this.updateTurnIndicator();
+                document.getElementById('card-container').classList.add('hidden');
+            }
+
+            resetGame() {
+                this.players.forEach(p => this.scores[p] = 0);
+                this.currentTurnIndex = 0;
+                this.saveState();
+                this.updateScoreboard();
+                this.updateTurnIndicator();
+                document.getElementById('card-container').classList.add('hidden');
+            }
+
+            updateScoreboard() {
+                const container = document.getElementById('scoreboard-list');
+                container.innerHTML = this.players.map((p, idx) => `
+                    <div class="flex justify-between items-center p-3 rounded-2xl border ${idx === this.currentTurnIndex ? 'border-indigo-500 bg-indigo-50/80 shadow-sm' : 'border-slate-100 bg-white'}">
+                        <span class="font-bold text-sm ${idx === this.currentTurnIndex ? 'text-indigo-900' : 'text-slate-700'}">${idx === this.currentTurnIndex ? '▶ ' : ''}${p}</span>
+                        <span class="bg-indigo-600 text-white text-xs font-bold px-2.5 py-1 rounded-full">${this.scores[p] || 0} pts</span>
+                    </div>
+                `).join('');
+            }
+
+            updateTurnIndicator() {
+                const current = this.players[this.currentTurnIndex] || '-';
+                document.getElementById('turn-indicator').innerText = `Turno de: ${current}`;
+            }
+
+            drawRoulette(angleOffset) {
+                const canvas = document.getElementById('roulette-canvas');
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                const centerX = canvas.width / 2;
+                const centerY = canvas.height / 2;
+                const radius = 130;
+                const sliceAngle = (2 * Math.PI) / categories.length;
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                categories.forEach((cat, i) => {
+                    const startAngle = i * sliceAngle + angleOffset;
+                    const endAngle = (i + 1) * sliceAngle + angleOffset;
+
+                    ctx.beginPath();
+                    ctx.moveTo(centerX, centerY);
+                    ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+                    ctx.closePath();
+                    ctx.fillStyle = cat.color;
+                    ctx.fill();
+                    ctx.strokeStyle = '#ffffff';
+                    ctx.lineWidth = 3;
+                    ctx.stroke();
+
+                    // Text & Icon
+                    ctx.save();
+                    ctx.translate(centerX, centerY);
+                    ctx.rotate(startAngle + sliceAngle / 2);
+                    ctx.textAlign = 'right';
+                    ctx.fillStyle = '#ffffff';
+                    ctx.font = 'bold 13px Quicksand';
+                    ctx.fillText(cat.icon, radius - 20, 5);
+                    ctx.restore();
+                });
+
+                // Center knob
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, 24, 0, 2 * Math.PI);
+                ctx.fillStyle = '#ffffff';
+                ctx.fill();
+                ctx.lineWidth = 4;
+                ctx.strokeStyle = '#6366f1';
+                ctx.stroke();
+            }
+
+            spinRoulette() {
+                if (this.isSpinning) return;
+                this.isSpinning = true;
+                document.getElementById('spin-btn').disabled = true;
+                document.getElementById('card-container').classList.add('hidden');
+
+                const mode = document.querySelector('input[name="game-mode"]:checked').value;
+                if (mode === 'timer') this.startTimer();
+
+                let currentAngle = 0;
+                const spinTimeTotal = 2500;
+                const startTime = performance.now();
+                const randomExtra = Math.random() * Math.PI * 2 + Math.PI * 10;
+
+                const animateSpin = (now) => {
+                    const elapsed = now - startTime;
+                    if (elapsed < spinTimeTotal) {
+                        const progress = elapsed / spinTimeTotal;
+                        const easeOut = 1 - Math.pow(1 - progress, 3);
+                        currentAngle = easeOut * randomExtra;
+                        this.drawRoulette(currentAngle);
+                        requestAnimationFrame(animateSpin);
+                    } else {
+                        this.isSpinning = false;
+                        document.getElementById('spin-btn').disabled = false;
+                        this.determineSelectedCategory(currentAngle);
+                    }
+                };
+
+                requestAnimationFrame(animateSpin);
+            }
+
+            determineSelectedCategory(finalAngle) {
+                const sliceAngle = (2 * Math.PI) / categories.length;
+                const normalizedAngle = (2 * Math.PI - (finalAngle % (2 * Math.PI))) % (2 * Math.PI);
+                const selectedIndex = Math.floor(normalizedAngle / sliceAngle) % categories.length;
+                const category = categories[selectedIndex];
+
+                this.showCard(category);
+            }
+
+            showCard(category) {
+                const randomQ = category.questions[Math.floor(Math.random() * category.questions.length)];
+                document.getElementById('card-category-tag').innerText = `${category.icon} ${category.name}`;
+                document.getElementById('card-question-text').innerText = randomQ;
+                
+                const container = document.getElementById('card-container');
+                container.classList.remove('hidden');
+                container.scrollIntoView({ behavior: 'smooth' });
+
+                confetti({ particleCount: 50, spread: 60, origin: { y: 0.8 } });
+            }
+
+            startTimer() {
+                const timerDisplay = document.getElementById('timer-display');
+                const timerCount = document.getElementById('timer-count');
+                timerDisplay.style.display = 'block';
+                this.timeLeft = 30;
+                timerCount.innerText = this.timeLeft;
+
+                clearInterval(this.timerInterval);
+                this.timerInterval = setInterval(() => {
+                    this.timeLeft--;
+                    timerCount.innerText = this.timeLeft;
+                    if (this.timeLeft <= 0) {
+                        clearInterval(this.timerInterval);
+                        timerDisplay.style.display = 'none';
+                        alert('¡Se terminó el tiempo!');
+                    }
+                }, 1000);
+            }
+
+            awardPoint() {
+                clearInterval(this.timerInterval);
+                document.getElementById('timer-display').style.display = 'none';
+                
+                const currentPlayer = this.players[this.currentTurnIndex];
+                if (currentPlayer) {
+                    this.scores[currentPlayer] = (this.scores[currentPlayer] || 0) + 1;
+                    this.saveState();
+                    this.updateScoreboard();
+                }
+                this.advanceTurn();
+            }
+
+            nextTurnOnly() {
+                clearInterval(this.timerInterval);
+                document.getElementById('timer-display').style.display = 'none';
+                this.advanceTurn();
+            }
+
+            advanceTurn() {
+                this.currentTurnIndex = (this.currentTurnIndex + 1) % this.players.length;
+                this.updateTurnIndicator();
+                this.updateScoreboard();
+                document.getElementById('card-container').classList.add('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Initialize App Globally
+        window.addEventListener('DOMContentLoaded', () => {
+            window.app = new EmotionalGameApp();
+        });
+    </script>
+</body>
+</html>

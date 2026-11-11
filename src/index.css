@@ -1,0 +1,49 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+
+  h1, h2, h3, h4, .font-display, .kids-font {
+    font-family: 'Outfit', sans-serif;
+  }
+}
+
+/* Screen Shake Animation on Shock / Punishment / Major events */
+@keyframes screenShake {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  20% { transform: translate(-6px, 4px) rotate(-1deg); }
+  40% { transform: translate(5px, -3px) rotate(1deg); }
+  60% { transform: translate(-4px, -2px) rotate(-0.5deg); }
+  80% { transform: translate(3px, 2px) rotate(0.5deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+.animate-screenshake {
+  animation: screenShake 0.45s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+/* Neon glow aura */
+@keyframes neonPulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 15px rgba(168, 85, 247, 0.45)) drop-shadow(0 0 35px rgba(6, 182, 212, 0.3));
+  }
+  50% {
+    filter: drop-shadow(0 0 25px rgba(236, 72, 153, 0.6)) drop-shadow(0 0 50px rgba(168, 85, 247, 0.45));
+  }
+}
+
+.neon-stage-glow {
+  animation: neonPulse 4s ease-in-out infinite;
+}
+
+/* Custom 3D Card tilt helper */
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+}
