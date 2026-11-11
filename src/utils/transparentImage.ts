@@ -8,7 +8,7 @@ let isProcessing = false;
 const listeners: ((url: string) => void)[] = [];
 
 export function getTransparentHostImage(
-  sourceUrl = '/public/assets/aistudio/bbef74db-2e1c-4874-9ab4-1dd0520cb9c0_e1e6224b.webp',
+  sourceUrl = `${import.meta.env.BASE_URL}assets/aistudio/bbef74db-2e1c-4874-9ab4-1dd0520cb9c0_e1e6224b.webp`,
   onReady?: (url: string) => void
 ): string {
   if (cachedTransparentUrl) {

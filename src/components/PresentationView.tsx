@@ -4,6 +4,7 @@ import { Participant } from '../types';
 import { KokoSpriteAnimator } from './KokoSpriteAnimator';
 import { soundFX } from '../utils/sound';
 import { kokoVoice } from '../utils/speech';
+import stageCurtainImg from '../assets/images/presentation_stage_curtain_1794275063512.jpg';
 
 interface PresentationViewProps {
   participants: Participant[];
@@ -102,7 +103,7 @@ export const PresentationView: React.FC<PresentationViewProps> = ({
       {/* Background Stage Image */}
       <div className="absolute inset-0 z-0">
         <img
-          src="/src/assets/images/presentation_stage_curtain_1794275063512.jpg"
+          src={stageCurtainImg}
           alt="Escenario Didáctico"
           className="w-full h-full object-cover object-center filter brightness-[0.4] contrast-110 scale-105"
         />

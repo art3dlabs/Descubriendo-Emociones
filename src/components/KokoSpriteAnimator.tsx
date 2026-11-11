@@ -25,34 +25,36 @@ export interface KokoSpriteAnimatorProps {
   showPedestal?: boolean;
 }
 
+const base = import.meta.env.BASE_URL || './';
+
 // Normalized 220x330 South-anchored master sprites (Ground-level aligned feet!)
 export const KOKO_SPRITES = {
   // Standing poses
-  welcome_arms: '/assets/koko_master_sprites/normalized/clean_welcome_arms.png',
-  open_hands: '/assets/koko_master_sprites/normalized/clean_open_hands.png',
-  point_player: '/assets/koko_master_sprites/normalized/clean_point_player.png',
-  present_side: '/assets/koko_master_sprites/normalized/clean_present_side.png',
-  thumbs_up: '/assets/koko_master_sprites/normalized/clean_thumbs_up.png',
-  celebrate_fists: '/assets/koko_master_sprites/normalized/clean_celebrate_fists.png',
-  victory_arms: '/assets/koko_master_sprites/normalized/clean_victory_arms.png',
-  thinking_standing: '/assets/koko_master_sprites/normalized/clean_thinking_standing.png',
+  welcome_arms: `${base}assets/koko_master_sprites/normalized/clean_welcome_arms.png`,
+  open_hands: `${base}assets/koko_master_sprites/normalized/clean_open_hands.png`,
+  point_player: `${base}assets/koko_master_sprites/normalized/clean_point_player.png`,
+  present_side: `${base}assets/koko_master_sprites/normalized/clean_present_side.png`,
+  thumbs_up: `${base}assets/koko_master_sprites/normalized/clean_thumbs_up.png`,
+  celebrate_fists: `${base}assets/koko_master_sprites/normalized/clean_celebrate_fists.png`,
+  victory_arms: `${base}assets/koko_master_sprites/normalized/clean_victory_arms.png`,
+  thinking_standing: `${base}assets/koko_master_sprites/normalized/clean_thinking_standing.png`,
 
   // Dynamic movement
-  run_rush: '/assets/koko_master_sprites/normalized/clean_run_rush.png',
-  jump_victory: '/assets/koko_master_sprites/normalized/clean_jump_victory.png',
-  lean_curious: '/assets/koko_master_sprites/normalized/clean_lean_curious.png',
-  crouch_listen: '/assets/koko_master_sprites/normalized/clean_crouch_listen.png',
-  wave_friendly: '/assets/koko_master_sprites/normalized/clean_wave_friendly.png',
+  run_rush: `${base}assets/koko_master_sprites/normalized/clean_run_rush.png`,
+  jump_victory: `${base}assets/koko_master_sprites/normalized/clean_jump_victory.png`,
+  lean_curious: `${base}assets/koko_master_sprites/normalized/clean_lean_curious.png`,
+  crouch_listen: `${base}assets/koko_master_sprites/normalized/clean_crouch_listen.png`,
+  wave_friendly: `${base}assets/koko_master_sprites/normalized/clean_wave_friendly.png`,
 
   // Walk cycle
-  walk1: '/assets/koko_master_sprites/normalized/clean_walk_step1.png',
-  walk2: '/assets/koko_master_sprites/normalized/clean_walk_step2.png',
-  walk3: '/assets/koko_master_sprites/normalized/clean_walk_step3.png',
-  walk4: '/assets/koko_master_sprites/normalized/clean_walk_step4.png',
+  walk1: `${base}assets/koko_master_sprites/normalized/clean_walk_step1.png`,
+  walk2: `${base}assets/koko_master_sprites/normalized/clean_walk_step2.png`,
+  walk3: `${base}assets/koko_master_sprites/normalized/clean_walk_step3.png`,
+  walk4: `${base}assets/koko_master_sprites/normalized/clean_walk_step4.png`,
 
   // Bust gestures
-  bust_applause: '/assets/koko_master_sprites/normalized/clean_bust_applause.png',
-  bust_shh: '/assets/koko_master_sprites/normalized/clean_bust_shh_secret.png',
+  bust_applause: `${base}assets/koko_master_sprites/normalized/clean_bust_applause.png`,
+  bust_shh: `${base}assets/koko_master_sprites/normalized/clean_bust_shh_secret.png`,
 };
 
 // Global cache preloader for instant zero-flicker rendering

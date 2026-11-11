@@ -11,6 +11,8 @@ export type KokoExpression =
   | 'grin'
   | 'knowing';
 
+const base = import.meta.env.BASE_URL || './';
+
 export const KOKO_EXPRESSIONS: Record<
   KokoExpression,
   {
@@ -22,56 +24,56 @@ export const KOKO_EXPRESSIONS: Record<
   }
 > = {
   wink: {
-    src: '/assets/koko_master_sprites/normalized/expr_wink.png',
+    src: `${base}assets/koko_master_sprites/normalized/expr_wink.png`,
     label: 'Guiño Koko',
     emoji: '😉',
     glow: 'rgba(236, 72, 153, 0.5)',
     border: 'border-pink-500',
   },
   laugh: {
-    src: '/assets/koko_master_sprites/normalized/expr_laugh.png',
+    src: `${base}assets/koko_master_sprites/normalized/expr_laugh.png`,
     label: '¡Risa Total!',
     emoji: '😂',
     glow: 'rgba(234, 179, 8, 0.5)',
     border: 'border-amber-400',
   },
   shocked: {
-    src: '/assets/koko_master_sprites/normalized/expr_shocked.png',
+    src: `${base}assets/koko_master_sprites/normalized/expr_shocked.png`,
     label: '¡Qué Momento!',
     emoji: '😲',
     glow: 'rgba(244, 63, 94, 0.6)',
     border: 'border-rose-500',
   },
   smirk: {
-    src: '/assets/koko_master_sprites/normalized/expr_smirk.png',
+    src: `${base}assets/koko_master_sprites/normalized/expr_smirk.png`,
     label: 'Mente Picante',
     emoji: '😏',
     glow: 'rgba(168, 85, 247, 0.5)',
     border: 'border-purple-500',
   },
   thinking: {
-    src: '/assets/koko_master_sprites/normalized/expr_thinking.png',
+    src: `${base}assets/koko_master_sprites/normalized/expr_thinking.png`,
     label: 'Evaluando...',
     emoji: '🤔',
     glow: 'rgba(6, 182, 212, 0.5)',
     border: 'border-cyan-400',
   },
   happy: {
-    src: '/assets/koko_master_sprites/normalized/expr_happy.png',
+    src: `${base}assets/koko_master_sprites/normalized/expr_happy.png`,
     label: 'Buena Onda',
     emoji: '😊',
     glow: 'rgba(34, 197, 94, 0.5)',
     border: 'border-emerald-400',
   },
   grin: {
-    src: '/assets/koko_master_sprites/normalized/expr_grin.png',
+    src: `${base}assets/koko_master_sprites/normalized/expr_grin.png`,
     label: 'Pura Sonrisa',
     emoji: '😁',
     glow: 'rgba(249, 115, 22, 0.5)',
     border: 'border-orange-400',
   },
   knowing: {
-    src: '/assets/koko_master_sprites/normalized/expr_knowing.png',
+    src: `${base}assets/koko_master_sprites/normalized/expr_knowing.png`,
     label: 'Ojo Clínico',
     emoji: '🧐',
     glow: 'rgba(99, 102, 241, 0.5)',
